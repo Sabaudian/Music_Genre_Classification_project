@@ -27,18 +27,20 @@ def features_extraction_to_csv(dataset_path, data_path):
 
     for dirpath, dirnames, filenames in os.walk(dataset_path):
         # exclude this folder
-        dirnames[:] = [d for d in dirnames if d not in const.EXCLUDE_FOLDER]
+        dirnames[:] = [d for d in sorted(dirnames) if d not in const.EXCLUDE_FOLDER]
 
         # ensure we're processing a genre sub-folder level
         if dirpath is not dataset_path:
-            print("\ndirpath: {}".format(dirpath))
+            # print("\ndirpath: {}".format(dirpath))
 
             # save genre label (i.e., sub-folder name) in the mapping
             semantic_label = dirpath.split("/")[-1]
-            print("\nsemantic label: {}".format(semantic_label))
+            print("\nExtracting Features from Folder: \033[92m{}\033[0m".format(semantic_label))
 
             # process all audio files in genre sub-dir
             for f in sorted(filenames):
+
+                print("\033[92m{}\033[0m checked!".format(f))
 
                 # load audio file
                 file_path = os.path.join(dirpath, f)
@@ -72,15 +74,6 @@ def features_extraction_to_csv(dataset_path, data_path):
                     writer = csv.writer(data_file)
                     writer.writerow(to_append.split())
 
-    # # check correct creation of CSV file
-    # if os.path.exists(data_path):
-    #     # sorting per filename and genres
-    #     dataFrame = pd.read_csv(data_path)
-    #     dataFrame.sort_values(["filename", "genre"], ascending=True, inplace=True, ignore_index=True)
-    #     dataFrame.to_csv(data_path, index=False)
-    #     # Printing messages
-    #     print("\nCSV Saved!")
-    #     print("Features Extractions Completed!")
 
 
 

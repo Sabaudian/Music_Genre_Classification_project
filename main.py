@@ -7,7 +7,7 @@ import constants as const
 if __name__ == '__main__':
 
     # pre-processing data
-    check_preprocessing_data = input("DO YOU WANT TO START PREPROCESSING DATA? [Y/N]: ")
+    check_preprocessing_data = input("DO YOU WANT TO START PRE-PROCESSING DATA? [Y/N]: ")
     if check_preprocessing_data.upper() == "Y":
 
         # check duration of sound file
