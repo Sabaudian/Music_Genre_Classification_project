@@ -1,8 +1,6 @@
 # DATASET AND DATA LOCATION
-OG_DATASET_PATH = "genres_original"  # location of original dataset
-MY_DATASET_PATH = "genres_updated"  # location of data after pre-processing
+DATASET_PATH = "genres"  # location of original dataset
 DATA_PATH = "data/data.csv"  # where to save extracted feature
-EXCLUDE_FOLDER = "source"  # exclude this folder from feature extraction
 CHUNK_LENGTH = 3000  # new length of chunks of audio sample
 FEATURE_HEADER = "filename chroma_stft_mean rms_mean spectral_centroid_mean spectral_bandwidth_mean rolloff_mean zero_crossing_rate_mean tempo"
 GENRES = "blues classical country disco hiphop jazz metal pop reggae rock"
@@ -11,9 +9,10 @@ GENRES = "blues classical country disco hiphop jazz metal pop reggae rock"
 # AUDIO CHARACTERISTICS
 SAMPLE_RATE = 22050
 TRACK_DURATION = 30  # measured in seconds
-DURATION = 3
+DURATION = 3  # duration of audio after pre-processing
 
 # USED FOR FEATURES EXTRACTION
+EXCLUDE_FOLDER = "original_30s"  # exclude this folder from feature extraction
 SAMPLES_PER_TRACK = SAMPLE_RATE * TRACK_DURATION
 NUM_MFCC = 20
 NUM_FTT = 2048

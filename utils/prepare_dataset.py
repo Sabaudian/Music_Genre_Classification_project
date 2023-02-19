@@ -7,59 +7,33 @@ from pydub.utils import which
 from pydub.utils import make_chunks
 
 
-# make directory to store pre-processed data
-def make_directory_for_dataset(new_dataset_path):
-    if os.path.exists(new_dataset_path):
-        print("\nFolder \033[92m{}\033[0m already exists".format(new_dataset_path))
-    else:
-        os.mkdir(new_dataset_path)
-        print("\nFolder \033[92m{}\033[0m created successfully".format(new_dataset_path))
-
-
-# make a copy of the original dataset
-def make_dataset_copy(source_folder, destination_folder):
+def check_sound_duration(dataset_path):
     # loop through all genre sub-folder
-    for i, (dirpath, dirname, filenames) in enumerate(os.walk(source_folder)):
+    for i, (dirpath, dirname, filenames) in enumerate(os.walk(dataset_path)):
 
         # ensure we're processing a genre sub-folder level
-        if dirpath is not source_folder:
-
-            # identify sub-folder name, alias the genre of the music
-            semantic_label = dirpath.split("/")[-1]
-
-            # create sub-folder based on genre
-            if not os.path.exists(str(destination_folder) + "/" + str(semantic_label)):
-                os.mkdir(destination_folder + "/" + semantic_label)
-                print("\nSub-Folder \033[92m[{}]\033[0m create in \033[92m[{}]\033[0m".format(semantic_label,
-                                                                                              destination_folder))
-            else:
-                print("\nSub-Folder \033[92m[{}]\033[0m already exists in \033[92m[{}]\033[0m".format(semantic_label,
-                                                                                                      destination_folder))
+        if dirpath is not dataset_path:
 
             # loop through audio file
             for f in sorted(filenames):
 
-                # define source and destination
-                source = dirpath + "/" + f
-                destination = destination_folder + "/" + semantic_label + "/" + f
+                # pick file extension
+                extension = f.split(".")[-1]
 
                 # control the duration -> at lest 30000 ms
                 file_path = os.path.join(dirpath, f)
-                sound = AudioSegment.from_file(file_path, format="wav")
+                sound = AudioSegment.from_file(file_path, format=extension)
                 duration_in_milliseconds = len(sound)
                 if duration_in_milliseconds < 30000:
+                    # pick file with wrong duration
+                    print("\n- File: \033[92m{}\033[0m, Duration: \033[92m{}\033[0m".format(f, duration_in_milliseconds))
                     # compute duration difference between my threshold and sound duration
                     duration_difference = 30000 - len(sound)
                     # append silence to reach the minimum quota
                     new_file_duration = sound[:len(sound)] + AudioSegment.silent(duration=duration_difference)
+                    print("\nAdjust Duration to: \033[92m{}\033[0m".format(new_file_duration))
                     # export file
-                    new_file_duration.export(file_path, format="wav")
-
-                # copy audio file into new location
-                if os.path.exists(dirpath):
-                    if not os.path.exists(destination):
-                        shutil.copy(source, destination)
-                        print("\n\033[92m[{}]\033[0m Copied into \033[92m[{}]\033[0m".format(source, destination))
+                    new_file_duration.export(file_path, format=extension)
 
 
 # divides each audio file into 3-second long files
@@ -103,7 +77,7 @@ def make_chunks_from_data(dataset_path, chunk_length):
                 if os.path.isfile(current_file_path):
                     print("- Location is File: \033[92m{}\033[0m".format(os.path.isfile(current_file_path)))
 
-                    processed_file = os.path.join(dirpath + "/source_30s", f)
+                    processed_file = os.path.join(dirpath + "/original_30s", f)
                     # print("- Processed File: \033[92m{}\033[0m".format(processed_file))
 
                     counter += 1  # simple counter to rename audio file
@@ -129,9 +103,9 @@ def make_chunks_from_data(dataset_path, chunk_length):
                         output_path = str(dirpath_root) + "/" + str(semantic_label) + "/" + str(chunk_name)
                         chunk.export(output_path, format=file_extension)
 
-                    print("\n- Check if folder exist: \033[92m{}\033[0m".format(os.path.isdir(dirpath + "/source_30s")))
-                    if not os.path.exists(dirpath + "/source"):
-                        os.makedirs(dirpath + "/source_30s")
+                    print("\n- Check if folder exist: \033[92m{}\033[0m".format(os.path.isdir(dirpath + "/original_30s")))
+                    if not os.path.exists(dirpath + "/original_30s"):
+                        os.makedirs(dirpath + "/original_30s")
                         shutil.move(current_file_path, processed_file)
                     else:
                         shutil.move(current_file_path, processed_file)

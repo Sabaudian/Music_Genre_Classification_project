@@ -72,15 +72,15 @@ def features_extraction_to_csv(dataset_path, data_path):
                     writer = csv.writer(data_file)
                     writer.writerow(to_append.split())
 
-    # check correct creation of CSV file
-    if os.path.exists(data_path):
-        # sorting per filename and genres
-        dataFrame = pd.read_csv(data_path)
-        dataFrame.sort_values(["filename", "genre"], ascending=True, inplace=True, ignore_index=True)
-        dataFrame.to_csv(data_path, index=False)
-        # Printing messages
-        print("\nCSV Saved!")
-        print("Features Extractions Completed!")
+    # # check correct creation of CSV file
+    # if os.path.exists(data_path):
+    #     # sorting per filename and genres
+    #     dataFrame = pd.read_csv(data_path)
+    #     dataFrame.sort_values(["filename", "genre"], ascending=True, inplace=True, ignore_index=True)
+    #     dataFrame.to_csv(data_path, index=False)
+    #     # Printing messages
+    #     print("\nCSV Saved!")
+    #     print("Features Extractions Completed!")
 
 
 
