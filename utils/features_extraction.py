@@ -1,3 +1,4 @@
+import math
 import os
 import csv
 import librosa
@@ -61,10 +62,14 @@ def features_extraction_to_csv(dataset_path, data_path):
                 zcr = fc.compute_zcr(signal, const.FRAME_SIZE, const.HOP_LENGHT)
                 # tempo
                 tempo = fc.compute_tempo(signal, sample_rate)
+                # energy
+                energy = fc.compute_energy(signal)
+                # entropy of energy
+                entropy_of_energy = fc.compute_entropy_of_energy(signal, num_of_short_blocks=math.ceil(len(signal)/const.FRAME_SIZE))
                 # mfcc
                 mfcc = fc.compute_mfcc(signal, sample_rate, const.NUM_MFCC, const.NUM_FTT, const.HOP_LENGHT)
 
-                to_append = f"{f} {np.mean(chroma_stft)} {np.mean(rms)} {np.mean(spec_centroid)} {np.mean(spec_bandwidth)} {np.mean(rolloff)} {np.mean(zcr)} {np.mean(tempo)}"
+                to_append = f"{f} {np.mean(chroma_stft)} {np.mean(rms)} {np.mean(spec_centroid)} {np.mean(spec_bandwidth)} {np.mean(rolloff)} {np.mean(zcr)} {np.mean(tempo)} {np.mean(energy)} {np.mean(entropy_of_energy)}"
 
                 for n in mfcc:
                     to_append += f" {np.mean(n)}"

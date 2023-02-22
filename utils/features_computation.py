@@ -1,4 +1,38 @@
+import sys
+import numpy as np
 import librosa.beat
+
+
+def compute_energy(signal):
+    # The sum of squares of the signal values,
+    # normalized by the respective frame length.
+    energy = np.sum(signal ** 2) / np.float64(len(signal))
+
+    return energy
+
+
+def compute_entropy_of_energy(signal, num_of_short_blocks=10):
+    # The entropy of sub-frames of normalized energies.
+    # It can be interpreted as a measure of abrupt changes.
+    epsilon = sys.float_info.epsilon
+    # frame energy
+    frame_energy = np.sum(signal ** 2)
+    frame_length = len(signal)
+
+    sub_win_len = int(np.floor(frame_length / num_of_short_blocks))
+    if frame_length != sub_win_len * num_of_short_blocks:
+        signal = signal[0:sub_win_len * num_of_short_blocks]
+
+    # sub-window of size: [num_of_short_blocks * L]
+    sub_win = signal.reshape(sub_win_len, num_of_short_blocks, order='F').copy()
+
+    # compute normalized sub-frame energy
+    norm_sub_frame_energy = np.sum(sub_win ** 2, axis=0) / (frame_energy + epsilon)
+
+    # compute entropy
+    entropy = -np.sum(epsilon * np.log2(norm_sub_frame_energy + epsilon))
+
+    return entropy
 
 
 def compute_tempo(signal, sample_rate):

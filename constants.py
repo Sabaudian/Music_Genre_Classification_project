@@ -2,7 +2,7 @@
 DATASET_PATH = "genres"  # location of original dataset
 DATA_PATH = "data/data.csv"  # where to save extracted feature
 CHUNK_LENGTH = 3000  # new length of chunks of audio sample
-FEATURE_HEADER = "filename chroma_stft_mean rms_mean spectral_centroid_mean spectral_bandwidth_mean rolloff_mean zero_crossing_rate_mean tempo"
+FEATURE_HEADER = "filename chroma_stft_mean rms_mean spectral_centroid_mean spectral_bandwidth_mean rolloff_mean zero_crossing_rate_mean tempo energy entropy_of_entropy"
 GENRES = "blues classical country disco hiphop jazz metal pop reggae rock"
 
 
