@@ -1,5 +1,9 @@
-from utils import features_extraction as feature
+import genres_sl_functions
+import genres_ul_functions
+
 from utils import prepare_dataset as prepare
+from utils import features_extraction as feature
+from utils import features_visualization as visualize
 
 import constants as const
 
@@ -7,23 +11,42 @@ import constants as const
 if __name__ == '__main__':
 
     # pre-processing data
-    check_preprocessing_data = input("DO YOU WANT TO START PRE-PROCESSING DATA? [Y/N]: ")
+    check_preprocessing_data = input("> START PRE-PROCESSING DATA? [Y/N]: ")
     if check_preprocessing_data.upper() == "Y":
 
         # check duration of sound file
-        check_if_sound_duration = input("\n>> CHECK SOUND QUALITY? [Y/N]: ")
+        check_if_sound_duration = input("\n>>> CHECK SOUND QUALITY? [Y/N]: ")
         if check_if_sound_duration.upper() == "Y":
             prepare.check_sound_duration(dataset_path=const.DATASET_PATH)
 
         # make chunk from og. sound file
-        check_if_chunks_exist = input("\n>> PERMORFORMING DATA AUGMENTATION? [Y/N]: ")
+        check_if_chunks_exist = input("\n>>> PERMORFORMING DATA AUGMENTATION? [Y/N]: ")
         if check_if_chunks_exist.upper() == "Y":
             prepare.make_chunks_from_data(dataset_path=const.DATASET_PATH, chunk_length=const.CHUNK_LENGTH)
 
-    # extract feature from samples
-    check_feature_extraction = input("\nDO YOU WANT TO EXTRACT FEATURES FROM DATASET? [Y/N]: ")
+    # extract and visualize features from samples
+    check_feature_extraction = input("\n> EXTRACT FEATURES FROM DATASET? [Y/N]: ")
     if check_feature_extraction.upper() == "Y":
         feature.features_extraction_to_csv(dataset_path=const.DATASET_PATH, data_path=const.DATA_PATH)
-    else:
-        print("\nWORK IN PROGRESS!!!")
-        print("TO DO: \nClustering method\nClassification methods\nEvaluation of classification methods and comparison")
+    else:  # visualization of features
+        check_features_visualization = input("\n> VISUALIZE THE EXTRACTED FEATURES? [Y/N]: ")
+        if check_features_visualization.upper() == "Y":
+            visualize.plot_signal_features(show_on_screen=False, store_in_folder=False)
+
+    # clustering and classification method
+    check_cluster_and_classification = input("\n> START THE EVALUATION? [Y/N]: ")
+    if check_cluster_and_classification.upper() == "Y":
+        check_k_mean_cluster = input("\n>>> PERFORM K-MEANS ALGORITHM? [Y/N]: ")
+        if check_k_mean_cluster.upper() == "Y":
+            genres_ul_functions.k_mean_clustering(data_path=const.DATA_PATH,
+                                                  normalization_type="min_max",
+                                                  show_plot=True,
+                                                  save_plot=False)
+
+        check_classification_models = input("\n>>> PERFORM CLASSIFICATION? [Y/N]: ")
+        if check_classification_models.upper() == "Y":
+            genres_sl_functions.classification_processes_and_evaluation(data_path=const.DATA_PATH,
+                                                                        normalization_type="min_max", show_plot=True,
+                                                                        save_plot=False)
+
+

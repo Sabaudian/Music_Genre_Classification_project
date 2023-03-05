@@ -3,7 +3,6 @@ import os
 import csv
 import librosa
 import numpy as np
-import pandas as pd
 
 import constants as const
 from utils import features_computation as fc
