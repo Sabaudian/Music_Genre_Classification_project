@@ -19,11 +19,21 @@ NUM_FTT = 2048
 FRAME_SIZE = 1024
 HOP_LENGHT = 512
 
-# FOR KMEAN AND SIMILAR
+# FOR K-MEAN AND SIMILAR
 VARIANCE_RATIO = 0.8
 
 # FOR PLOT AND SIMILAR
-COLORS_LIST = {"red", "blue", "green", "purple", "orange", "deeppink", "skyblue", "aquamarine", "teal", "dodgerblue"}
-GENRES_SET = ["blues", "classical", "country", "disco", "hiphop", "jazz", "metal", "pop", "reggae", "rock"]
+ROC_COLOR_LIST = {"#006400", "#00008b", "#b03060", "#ff0000", "#ffd700", "#deb887", "#00ff00", "#00ffff", "#ff00ff", "#6495ed"}
+COLORS_LIST = {"#006400", "#00008b", "#b03060", "#ff0000", "#ffd700", "#deb887", "#00ff00", "#00ffff", "#ff00ff", "#6495ed"}
+PRED_EVA_LIST = {"#006400", "#ffd700"}
+GENRES_LIST = ["blues", "classical", "country", "disco", "hiphop", "jazz", "metal", "pop", "reggae", "rock"]
 
-
+# FOR NAMING FILE AND SIMILAR
+STORE_PATH = "plot"
+JPG = ".jpg"
+CORR_MATR_TAG = "correlation_matrix"
+PCA_TAG = "pca_scatter_plot"
+K_MEAN_PCA_CC = "pca_k-mean_cluster_centroids_plot"
+K_MEAN_CONF_MATR = "k-means_confusion_matrix_plot"
+CONF_MATR = "_confusion_matrix"
+ROC_CURVE = "_roc_plot"

@@ -1,23 +1,16 @@
-import os
-import math
 import sklearn
-import IPython.display
-
 import numpy as np
-import pandas as pd
-import seaborn as sns
 
 import librosa
 import librosa.display
-
 import matplotlib.pyplot as plt
 
+# my import
 import constants as const
-
 from utils import features_computation
 
 
-def plot_signal_features(show_on_screen=True, store_in_folder=False):
+def plot_signal_features():
     genres = {
         "blues": "genres/blues/original_30s/blues.00000.wav",
         "classical": "genres/classical/original_30s/classical.00000.wav",
@@ -169,7 +162,7 @@ def plot_signal_features(show_on_screen=True, store_in_folder=False):
     plt.tight_layout()
     plt.show()
 
-    # Spectral Rolloff
+    # Spectral Roll-off
     fig, ax = plt.subplots(nrows=5, ncols=2, figsize=(16, 8.2))
     rows, columns = 0, 0
 
@@ -198,7 +191,7 @@ def plot_signal_features(show_on_screen=True, store_in_folder=False):
     plt.show()
 
     # MFCCs
-    # Spectral Rolloff
+    # Spectral Roll-off
     fig, ax = plt.subplots(nrows=5, ncols=2, figsize=(16, 8.2))
     rows, columns = 0, 0
 

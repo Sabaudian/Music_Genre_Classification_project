@@ -102,7 +102,7 @@ def get_pca_data_and_centroids(input_data, input_columns, num_of_components, cen
 
     # plot PCA
     if show_on_screen:
-        plot_function.plot_pca(input_pca_data=pca_data[["PC1", "PC2", "genre"]], genre_list=const.GENRES_SET,
+        plot_function.plot_pca(input_pca_data=pca_data[["PC1", "PC2", "genre"]], genre_list=const.GENRES_LIST,
                                store_in_folder=store_in_folder)
 
     return pca_data, pca_centroids
@@ -118,7 +118,7 @@ def k_means_model(input_data, clusters_number, random_state):
     return labels, predict_clusters, centroids, k_means
 
 
-def k_mean_clustering(data_path, normalization_type, show_plot, save_plot):
+def k_means_clustering(data_path, normalization_type, show_plot, save_plot):
     # load data
     X, y, data_frame = load_data(data_path, normalization_type)
     print("\nLoaded Data:\n\033[92m{}\033[0m".format(data_frame))
@@ -126,9 +126,12 @@ def k_mean_clustering(data_path, normalization_type, show_plot, save_plot):
     print("\nX:\n\033[92m{}\033[0m".format(X))
     print("\ny:\n\033[92m{}\033[0m".format(y))
 
+    # plot correlation matrix
+    plot_function.plot_correlation_matrix(X, show_on_screen=show_plot, store_in_folder=save_plot)
+
     # pick optimal number of components
     num_of_components = optimal_number_of_components(input_data=X,
-                                                     variance_ratio=0.8,
+                                                     variance_ratio=const.VARIANCE_RATIO,
                                                      show_on_screen=show_plot,
                                                      store_in_folder=False)
     print("\nOptimal Number of Components: \033[92m{}\033[0m".format(num_of_components))
@@ -139,7 +142,7 @@ def k_mean_clustering(data_path, normalization_type, show_plot, save_plot):
                                                                  random_state=42)
 
     plot_function.plot_k_mean_confusion_matrix(data_frame, labels,
-                                               const.GENRES_SET,
+                                               const.GENRES_LIST,
                                                show_on_screen=show_plot,
                                                store_in_folder=save_plot)
 
@@ -156,11 +159,11 @@ def k_mean_clustering(data_path, normalization_type, show_plot, save_plot):
                                             centroids=pca_centroids,
                                             labels=labels,
                                             colors_list=const.COLORS_LIST,
-                                            genres_list=const.GENRES_SET,
+                                            genres_list=const.GENRES_LIST,
                                             show_on_screen=show_plot,
                                             store_in_folder=save_plot)
 
-    plot_function.plot_roc(y.values, labels, "K-mean", const.GENRES_SET,
+    plot_function.plot_roc(y.values, labels, "K-mean", const.GENRES_LIST,
                            "UL", show_on_screen=show_plot, store_in_folder=save_plot)
 
 
@@ -192,8 +195,8 @@ if __name__ == '__main__':
     # print("\nK-Means Model:\n\033[92m{}\033[0m".format(k_means))
 
     plot_function.plot_k_mean_confusion_matrix(data_frame, labels,
-                                               const.GENRES_SET,
-                                               show_on_screen=False,
+                                               const.GENRES_LIST,
+                                               show_on_screen=True,
                                                store_in_folder=False)
 
     # get pca and centroids
@@ -201,7 +204,7 @@ if __name__ == '__main__':
                                                          input_columns=y,
                                                          num_of_components=num_of_components,
                                                          centroids_value=centroids,
-                                                         show_on_screen=False,
+                                                         show_on_screen=True,
                                                          store_in_folder=False)
     # print("\nPCA Data:\n\033[92m{}\033[0m".format(pca_data))
     # print("\nPCA Centroids:\n\033[92m{}\033[0m".format(pca_centroids))
@@ -211,8 +214,8 @@ if __name__ == '__main__':
                                             centroids=pca_centroids,
                                             labels=labels,
                                             colors_list=const.COLORS_LIST,
-                                            genres_list=const.GENRES_SET,
-                                            show_on_screen=False,
+                                            genres_list=const.GENRES_LIST,
+                                            show_on_screen=True,
                                             store_in_folder=False)
 
-    plot_function.plot_roc(y.values, labels, "k-mean", const.GENRES_SET, "UL", show_on_screen=True, store_in_folder=True)
+    plot_function.plot_roc(y.values, labels, "k-mean", const.GENRES_LIST, "UL", show_on_screen=True, store_in_folder=True)
