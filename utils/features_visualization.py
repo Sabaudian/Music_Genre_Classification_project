@@ -11,19 +11,10 @@ from utils import features_computation
 
 
 def plot_signal_features():
-    genres = {
-        "blues": "genres/blues/original_30s/blues.00000.wav",
-        "classical": "genres/classical/original_30s/classical.00000.wav",
-        "country": "genres/country/original_30s/country.00000.wav",
-        "disco": "genres/disco/original_30s/disco.00000.wav",
-        "hiphop": "genres/hiphop/original_30s/hiphop.00000.wav",
-        "jazz": "genres/jazz/original_30s/jazz.00000.wav",
-        "metal": "genres/metal/original_30s/metal.00000.wav",
-        "pop": "genres/pop/original_30s/pop.00000.wav",
-        "reggae": "genres/reggae/original_30s/reggae.00000.wav",
-        "rock": "genres/rock/original_30s/rock.00000.wav"
-    }
+    # path of audio signal of every genre
+    genres = const.FEATURES_VISUALIZATION_PATH
 
+    # print simple characteristics
     print("\nPick one signal per genre: ")
     for key, value in genres.items():
         signal, sample_rate = librosa.load(value)
@@ -35,6 +26,7 @@ def plot_signal_features():
 
     # Waveform
     fig, ax = plt.subplots(nrows=5, ncols=2, figsize=(16, 8.2))
+    fig.suptitle("Waveform", fontsize=14)
     rows, columns = 0, 0
 
     for key, value in genres.items():
@@ -57,6 +49,7 @@ def plot_signal_features():
 
     # ZCR
     fig, ax = plt.subplots(nrows=5, ncols=2, figsize=(16, 8.2))
+    fig.suptitle("ZCR", fontsize=14)
     rows, columns = 0, 0
 
     for key, value in genres.items():
@@ -80,6 +73,8 @@ def plot_signal_features():
 
     # Spectrogram
     fig, ax = plt.subplots(nrows=5, ncols=2, figsize=(16, 8.2))
+    fig.suptitle("Spectrogram", fontsize=14)
+
     rows, columns = 0, 0
 
     for key, value in genres.items():
@@ -108,6 +103,7 @@ def plot_signal_features():
 
     # Spectral Centroid
     fig, ax = plt.subplots(nrows=5, ncols=2, figsize=(16, 8.2))
+    fig.suptitle("Spectral Centroid", fontsize=14)
     rows, columns = 0, 0
 
     for key, value in genres.items():
@@ -136,6 +132,7 @@ def plot_signal_features():
 
     # Spectral Bandwidth
     fig, ax = plt.subplots(nrows=5, ncols=2, figsize=(16, 8.2))
+    fig.suptitle("Spectral Bandwidth", fontsize=14)
     rows, columns = 0, 0
 
     for key, value in genres.items():
@@ -164,6 +161,7 @@ def plot_signal_features():
 
     # Spectral Roll-off
     fig, ax = plt.subplots(nrows=5, ncols=2, figsize=(16, 8.2))
+    fig.suptitle("Spectral Rolloff", fontsize=14)
     rows, columns = 0, 0
 
     for key, value in genres.items():
@@ -193,6 +191,7 @@ def plot_signal_features():
     # MFCCs
     # Spectral Roll-off
     fig, ax = plt.subplots(nrows=5, ncols=2, figsize=(16, 8.2))
+    fig.suptitle("MFCCs", fontsize=14)
     rows, columns = 0, 0
 
     for key, value in genres.items():

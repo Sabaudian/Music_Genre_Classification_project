@@ -1,14 +1,25 @@
-import math
 import os
 import csv
+import math
 import librosa
 import numpy as np
 
+# my import functions
 import constants as const
 from utils import features_computation as fc
 
 
-def features_extraction_to_csv(dataset_path, data_path):
+def makedir(dir_path):
+    # create a new directory
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+        print("\n Folder " + dir_path + "has been crated successfully!")
+
+
+def features_extraction_to_csv(dataset_path, destination_path):
+
+    # make new directory for extracted data
+    makedir(destination_path)
 
     # generate a dataset
     header = const.FEATURE_HEADER
@@ -20,18 +31,15 @@ def features_extraction_to_csv(dataset_path, data_path):
     header = header.split()
 
     # generate file.csv
-    file = open(data_path, "w", newline="")
+    file = open(destination_path, "w", newline="")
     with file:
         writer = csv.writer(file)
         writer.writerow(header)
 
     for dirpath, dirnames, filenames in os.walk(dataset_path):
-        # exclude this folder
-        dirnames[:] = [d for d in sorted(dirnames) if d not in const.EXCLUDE_FOLDER]
 
         # ensure we're processing a genre sub-folder level
         if dirpath is not dataset_path:
-            # print("\ndirpath: {}".format(dirpath))
 
             # save genre label (i.e., sub-folder name) in the mapping
             semantic_label = dirpath.split("/")[-1]
@@ -73,7 +81,7 @@ def features_extraction_to_csv(dataset_path, data_path):
                 for n in mfcc:
                     to_append += f" {np.mean(n)}"
                 to_append += f" {semantic_label}"
-                data_file = open(data_path, "a", newline="")
+                data_file = open(destination_path, "a", newline="")
                 with data_file:
                     writer = csv.writer(data_file)
                     writer.writerow(to_append.split())

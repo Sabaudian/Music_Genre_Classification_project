@@ -1,13 +1,9 @@
 import numpy as np
-import pandas
 import pandas as pd
 
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
-
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.metrics import classification_report
-
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
@@ -102,7 +98,7 @@ def compute_evaluation_metrics(model, model_name, X_test, y_test):
     clf_report = classification_report(y_test, y_predict, target_names=const.GENRES_LIST, digits=2, output_dict=True)
     clf_report.update({"accuracy": {"precision": None, "recall": None, "f1-score": clf_report["accuracy"],
                                     "support": clf_report.get("macro avg")["support"]}})
-    df = pandas.DataFrame(clf_report).transpose()
+    df = pd.DataFrame(clf_report).transpose()
     df.to_csv("data/" + model_name + "_classification_report.csv", index=True, float_format="%.5f")
 
 
@@ -178,9 +174,9 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
             # Predict the target vector
             y_predict = model_type.predict(X_test)
             # plot histogram
-            plot_function.plot_genres_comparison_of_predictions(y_test=y_test, y_pred=y_predict,
-                                                                genres_list=const.GENRES_LIST, model_name=model_name,
-                                                                show_on_screen=True, store_in_folder=True)
+            plot_function.plot_comparison_of_predictions_by_genre(y_test=y_test, y_pred=y_predict,
+                                                                  genres_list=const.GENRES_LIST, model_name=model_name,
+                                                                  show_on_screen=True, store_in_folder=True)
         if show_simple_compare:
             input_data = prediction_comparison(model=model_type, X_test=X_test, y_test=y_test)
             # evaluation actual/prediction
@@ -212,7 +208,7 @@ def classification_processes_and_evaluation(data_path, normalization_type):
     print("\nStarting Classification Proces: ")
     clf_models = get_classification_model()
     model_evaluation(models=clf_models, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test,
-                     show_confusion_matrix=False, show_roc_curve=False, show_compare_prediction_by_genre=False,
+                     show_confusion_matrix=False, show_roc_curve=False, show_compare_prediction_by_genre=True,
                      show_simple_compare=True)
 
 
