@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 
@@ -6,11 +7,21 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
+
+# for feature importance weight
+from eli5.sklearn import PermutationImportance
 
 # my import functions
 import constants as const
 import plot_function
+
+
+def makedir(dir_path):
+    # create a new directory
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
 
 
 def load_data(data_path, type_of_normalization):
@@ -53,9 +64,8 @@ def prepare_datasets(X, y, test_size):
 
 
 def get_classification_model():
-    
     # models dictionary
-    models = {"NN": [], "RF": [], "SVM": []}
+    models = {"NN": [], "RF": [], "KNN": [], "SVM": []}
 
     # Neural Network
     nn_model = MLPClassifier(solver="adam", alpha=1e-5, hidden_layer_sizes=(16, 16), random_state=1,
@@ -67,6 +77,10 @@ def get_classification_model():
     rf_model = RandomForestClassifier(n_estimators=1000, max_depth=10, random_state=0)
     models.update({"RF": rf_model})
 
+    # k-Nearest Neighbor
+    knn_model = KNeighborsClassifier(n_neighbors=20, weights="distance")
+    models.update({"KNN": knn_model})
+
     # Support Vector Machine
     svc_model = SVC(C=10, kernel="rbf", probability=True, random_state=10)
     models.update({"SVM": svc_model})
@@ -75,35 +89,32 @@ def get_classification_model():
 
 
 def compute_evaluation_metrics(model, model_name, X_test, y_test):
-
     # Predict the target vector
     y_predict = model.predict(X_test)
 
-    # # Accuracy score
-    # accuracy = round(accuracy_score(y_test, y_predict), 5) * 100
-    # print("- {} Accuracy Score: \033[92m{}%\033[0m".format(model_name, accuracy))
-    # # Error score
-    # error = round(1 - accuracy_score(y_test, y_predict), 5) * 100
-    # print("- {} Error Score: \033[92m{}%\033[0m".format(model_name, error))
-    # # Precision score
-    # precision = round(precision_score(y_test, y_predict, average="weighted"), 5) * 100
-    # print("- {} Precision: \033[92m{}%\033[0m".format(model_name, precision))
-    # # Recall score
-    # recall = round(recall_score(y_test, y_predict, average="weighted"), 5) * 100
-    # print("- {} Recall: \033[92m{}%\033[0m".format(model_name, recall))
-    # # F1 score
-    # f1 = round(f1_score(y_test, y_predict, average="weighted"), 5) * 100
-    # print("- {} F1: \033[92m{}%\033[0m\n".format(model_name, f1))
-    # Precision, recall and f1-scores
     clf_report = classification_report(y_test, y_predict, target_names=const.GENRES_LIST, digits=2, output_dict=True)
     clf_report.update({"accuracy": {"precision": None, "recall": None, "f1-score": clf_report["accuracy"],
                                     "support": clf_report.get("macro avg")["support"]}})
     df = pd.DataFrame(clf_report).transpose()
-    df.to_csv("data/" + model_name + "_classification_report.csv", index=True, float_format="%.5f")
+    makedir(const.DATA_FOLDER + "/" + const.CLF_REPORT_PATH)
+    df.to_csv(const.DATA_FOLDER + "/" + const.CLF_REPORT_PATH + "/" + model_name + "_classification_report.csv",
+              index=True, float_format="%.5f")
+
+
+# def feature_importance_weight(model, model_name, X_test, y_test):
+#
+#     permutation = PermutationImportance(estimator=model, random_state=1)
+#     permutation.fit(X=X_test, y=y_test)
+#
+#     df = pd.DataFrame(dict(feature_names=X_test.columns.tolist(),
+#                            feat_imp=permutation.feature_importances_,
+#                            std=permutation.feature_importances_std_,
+#                            ))
+#     df.sort_values("feat_imp", ascending=False)
+#     df.to_csv("data/" + model_name + "_features_weight.csv", index=True, float_format="%.5f")
 
 
 def prediction_comparison(model, X_test, y_test):
-
     # Predict the target vector
     y_predict = model.predict(X_test)
 
@@ -132,17 +143,15 @@ def prediction_comparison(model, X_test, y_test):
 def model_evaluation(models, X_train, y_train, X_test, y_test,
                      show_confusion_matrix=True, show_roc_curve=True,
                      show_compare_prediction_by_genre=True, show_simple_compare=True):
-
     # evaluation of every classification model
     for key, value in models.items():
 
-        # NN, RF and SVM
+        # NN, KNN, RF and SVM
         model_name = key
         # computed model
         model_type = value
 
         if show_confusion_matrix:
-
             # plotting confusion matrix
             plot_function.plot_confusion_matrix(model=model_type,
                                                 model_name=model_name,
@@ -151,7 +160,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                 X_test=X_test,
                                                 y_test=y_test,
                                                 show_on_screen=True,
-                                                store_in_folder=True)
+                                                store_in_folder=False)
 
         if model_name == "SVM":
             y_score = model_type.fit(X_train, y_train).decision_function(X_test)
@@ -160,7 +169,6 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
             y_score = model_type.predict_proba(X_test)
 
         if show_roc_curve:
-
             # Plotting roc curve
             plot_function.plot_roc(y_test=y_test,
                                    y_score=y_score,
@@ -168,7 +176,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                    genres_list=const.GENRES_LIST,
                                    type_of_learning="SL",
                                    show_on_screen=True,
-                                   store_in_folder=True)
+                                   store_in_folder=False)
 
         if show_compare_prediction_by_genre:
             # Predict the target vector
@@ -176,18 +184,20 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
             # plot histogram
             plot_function.plot_comparison_of_predictions_by_genre(y_test=y_test, y_pred=y_predict,
                                                                   genres_list=const.GENRES_LIST, model_name=model_name,
-                                                                  show_on_screen=True, store_in_folder=True)
+                                                                  show_on_screen=True, store_in_folder=False)
         if show_simple_compare:
             input_data = prediction_comparison(model=model_type, X_test=X_test, y_test=y_test)
             # evaluation actual/prediction
             plot_function.plot_predictions_evaluation(input_data, model_name=model_name, genres_list=const.GENRES_LIST,
-                                                      show_on_screen=True, store_in_folder=True)
+                                                      show_on_screen=True, store_in_folder=False)
         # metrics computation
         compute_evaluation_metrics(model=model_type, model_name=model_name, X_test=X_test, y_test=y_test)
 
+        # feature importance
+        # feature_importance_weight(model=model_type, model_name=model_name, X_test=X_test, y_test=y_test)
+
 
 def classification_processes_and_evaluation(data_path, normalization_type):
-
     # load data
     X, y, df = load_data(data_path=data_path, type_of_normalization=normalization_type)
     print("\nData:\n\033[92m{}\033[0m".format(df))
@@ -203,13 +213,12 @@ def classification_processes_and_evaluation(data_path, normalization_type):
 
     print("- Test set has \033[92m{}\033[0m"
           " records out of \033[92m{}\033[0m"
-          " which is \033[92m{}%\033[0m".format(X_test.shape[0], len(df), round(X_test.shape[0] / len(df) * 100)))
+          " which is \033[92m{}%\033[0m\n".format(X_test.shape[0], len(df), round(X_test.shape[0] / len(df) * 100)))
 
-    print("\nStarting Classification Proces: ")
     clf_models = get_classification_model()
     model_evaluation(models=clf_models, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test,
-                     show_confusion_matrix=False, show_roc_curve=False, show_compare_prediction_by_genre=True,
-                     show_simple_compare=True)
+                     show_confusion_matrix=False, show_roc_curve=False, show_compare_prediction_by_genre=False,
+                     show_simple_compare=False)
 
 
 if __name__ == '__main__':

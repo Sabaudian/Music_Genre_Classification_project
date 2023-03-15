@@ -22,7 +22,8 @@ if __name__ == '__main__':
         # make chunk from og. sound file
         check_if_chunks_exist = input("\n>>> PERMORFORMING DATA AUGMENTATION? [Y/N]: ")
         if check_if_chunks_exist.upper() == "Y":
-            prepare.make_chunks_from_data(dataset_path=const.DATASET_PATH, chunk_length=const.CHUNK_LENGTH)
+            prepare.make_chunks_from_data(dataset_path=const.DATASET_PATH, chunk_length=const.CHUNK_LENGTH,
+                                          new_dir_path=const.GENRES_3S_PATH)
 
     # extract and visualize features from samples
     check_feature_extraction = input("\n> EXTRACT FEATURES FROM DATA? [Y/N]: ")
@@ -31,10 +32,10 @@ if __name__ == '__main__':
     else:  # visualization of features
         check_features_visualization = input("\n> VISUALIZE THE EXTRACTED FEATURES? [Y/N]: ")
         if check_features_visualization.upper() == "Y":
-            visualize.plot_signal_features()
+            visualize.visualize_features()
 
     # clustering and classification method
-    check_cluster_and_classification = input("\n> START THE EVALUATION? [Y/N]: ")
+    check_cluster_and_classification = input("\n> START LEARNING? [Y/N]: ")
     if check_cluster_and_classification.upper() == "Y":
         check_k_mean_cluster = input("\n>>> PERFORM K-MEANS ALGORITHM? [Y/N]: ")
         if check_k_mean_cluster.upper() == "Y":

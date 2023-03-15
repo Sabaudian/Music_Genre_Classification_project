@@ -1,6 +1,5 @@
 import os
 import math
-import shutil
 
 from pydub import AudioSegment
 from pydub.utils import make_chunks

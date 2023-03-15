@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 from sklearn import metrics
 from sklearn import preprocessing
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, accuracy_score
 from itertools import cycle
 
 # my import functions
@@ -135,6 +135,8 @@ def plot_confusion_matrix(model, model_name, X_train, y_train, X_test, y_test,
     model.fit(X_train, y_train)
     # Predict the target vector
     predicts = model.predict(X_test)
+    # Accuracy da cancellare
+    print("{} Accuracy: {}". format(model_name, round(accuracy_score(y_test, predicts), 5)))
 
     if show_on_screen:
         # Plot confusion matrix
