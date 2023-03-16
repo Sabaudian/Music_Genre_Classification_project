@@ -44,7 +44,6 @@ if __name__ == '__main__':
 
         check_classification_models = input("\n>>> PERFORM CLASSIFICATION? [Y/N]: ")
         if check_classification_models.upper() == "Y":
-            genres_sl_functions.classification_processes_and_evaluation(data_path=const.DATA_PATH,
-                                                                        normalization_type="min_max")
+            genres_sl_functions.classification_and_evaluation(data_path=const.DATA_PATH, normalization_type="min_max")
 
 

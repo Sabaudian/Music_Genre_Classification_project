@@ -136,7 +136,7 @@ def plot_confusion_matrix(model, model_name, X_train, y_train, X_test, y_test,
     # Predict the target vector
     predicts = model.predict(X_test)
     # Accuracy da cancellare
-    print("{} Accuracy: {}". format(model_name, round(accuracy_score(y_test, predicts), 5)))
+    print("{} Accuracy: {}".format(model_name, round(accuracy_score(y_test, predicts), 5)))
 
     if show_on_screen:
         # Plot confusion matrix
@@ -242,4 +242,29 @@ def plot_predictions_evaluation(input_data, model_name, genres_list, show_on_scr
                         xytext=(0, 5), textcoords="offset points", fontsize=10, rotation=0)
         if store_in_folder:
             plt.savefig(const.STORE_PATH + model_name.replace(" ", "_") + const.PREDICT_EV_TAG + const.JPG, dpi=300)
+        plt.show()
+
+
+def plot_classification_report(clf_report, model_name, show_on_screen=True, store_in_folder=True):
+    # exclude support column
+    df = clf_report.loc[:, clf_report.columns != "support"]
+
+    if show_on_screen:
+        plt.figure(figsize=(16, 8))
+        ax = sns.heatmap(df,
+                         cmap="RdBu",
+                         annot=True,
+                         fmt="g",
+                         annot_kws={"size": 10},
+                         linewidths=1,
+                         linecolor="black",
+                         cbar=True,
+                         clip_on=False)
+        ax.tick_params(labelsize=14)
+        plt.title("{} Classification report".format(model_name), fontsize=22)
+        plt.xlabel("Metrics", fontsize=18)
+        plt.ylabel("Classes", fontsize=18)
+
+        if store_in_folder:
+            plt.savefig(const.STORE_PATH + model_name.replace(" ", "_") + "_clf_report" + const.JPG, dpi=300)
         plt.show()

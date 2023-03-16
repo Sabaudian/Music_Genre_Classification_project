@@ -10,9 +10,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 
-# for feature importance weight
-from eli5.sklearn import PermutationImportance
-
 # my import functions
 import constants as const
 import plot_function
@@ -78,7 +75,7 @@ def get_classification_model():
     models.update({"RF": rf_model})
 
     # k-Nearest Neighbor
-    knn_model = KNeighborsClassifier(n_neighbors=20, weights="distance")
+    knn_model = KNeighborsClassifier(weights="distance")
     models.update({"KNN": knn_model})
 
     # Support Vector Machine
@@ -92,26 +89,18 @@ def compute_evaluation_metrics(model, model_name, X_test, y_test):
     # Predict the target vector
     y_predict = model.predict(X_test)
 
+    # compute report
     clf_report = classification_report(y_test, y_predict, target_names=const.GENRES_LIST, digits=2, output_dict=True)
+    # update so in df is shown in the same way as standard print
     clf_report.update({"accuracy": {"precision": None, "recall": None, "f1-score": clf_report["accuracy"],
                                     "support": clf_report.get("macro avg")["support"]}})
     df = pd.DataFrame(clf_report).transpose()
+
+    # save report into file
     makedir(const.DATA_FOLDER + "/" + const.CLF_REPORT_PATH)
     df.to_csv(const.DATA_FOLDER + "/" + const.CLF_REPORT_PATH + "/" + model_name + "_classification_report.csv",
               index=True, float_format="%.5f")
-
-
-# def feature_importance_weight(model, model_name, X_test, y_test):
-#
-#     permutation = PermutationImportance(estimator=model, random_state=1)
-#     permutation.fit(X=X_test, y=y_test)
-#
-#     df = pd.DataFrame(dict(feature_names=X_test.columns.tolist(),
-#                            feat_imp=permutation.feature_importances_,
-#                            std=permutation.feature_importances_std_,
-#                            ))
-#     df.sort_values("feat_imp", ascending=False)
-#     df.to_csv("data/" + model_name + "_features_weight.csv", index=True, float_format="%.5f")
+    return df
 
 
 def prediction_comparison(model, X_test, y_test):
@@ -191,13 +180,12 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
             plot_function.plot_predictions_evaluation(input_data, model_name=model_name, genres_list=const.GENRES_LIST,
                                                       show_on_screen=True, store_in_folder=False)
         # metrics computation
-        compute_evaluation_metrics(model=model_type, model_name=model_name, X_test=X_test, y_test=y_test)
+        clf_report = compute_evaluation_metrics(model=model_type, model_name=model_name, X_test=X_test, y_test=y_test)
+        plot_function.plot_classification_report(clf_report=clf_report, model_name=model_name, show_on_screen=True,
+                                                 store_in_folder=False)
 
-        # feature importance
-        # feature_importance_weight(model=model_type, model_name=model_name, X_test=X_test, y_test=y_test)
 
-
-def classification_processes_and_evaluation(data_path, normalization_type):
+def classification_and_evaluation(data_path, normalization_type):
     # load data
     X, y, df = load_data(data_path=data_path, type_of_normalization=normalization_type)
     print("\nData:\n\033[92m{}\033[0m".format(df))
@@ -222,4 +210,4 @@ def classification_processes_and_evaluation(data_path, normalization_type):
 
 
 if __name__ == '__main__':
-    classification_processes_and_evaluation(const.DATA_PATH, "min_max")
+    classification_and_evaluation(const.DATA_PATH, "min_max")
