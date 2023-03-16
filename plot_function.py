@@ -268,3 +268,4 @@ def plot_classification_report(clf_report, model_name, show_on_screen=True, stor
         if store_in_folder:
             plt.savefig(const.STORE_PATH + model_name.replace(" ", "_") + "_clf_report" + const.JPG, dpi=300)
         plt.show()
+
