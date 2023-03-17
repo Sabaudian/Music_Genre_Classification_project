@@ -39,11 +39,12 @@ if __name__ == '__main__':
     if check_cluster_and_classification.upper() == "Y":
         check_k_mean_cluster = input("\n>>> PERFORM K-MEANS ALGORITHM? [Y/N]: ")
         if check_k_mean_cluster.upper() == "Y":
-            genres_ul_functions.k_means_clustering(data_path=const.DATA_PATH, normalization_type="min_max",
-                                                   show_plot=True, save_plot=False)
+            genres_ul_functions.clustering_and_evaluation(data_path=const.DATA_PATH,
+                                                          normalization_type=const.MIN_MAX_NORM)
 
         check_classification_models = input("\n>>> PERFORM CLASSIFICATION? [Y/N]: ")
         if check_classification_models.upper() == "Y":
-            genres_sl_functions.classification_and_evaluation(data_path=const.DATA_PATH, normalization_type="min_max")
+            genres_sl_functions.classification_and_evaluation(data_path=const.DATA_PATH,
+                                                              normalization_type=const.MIN_MAX_NORM)
 
 

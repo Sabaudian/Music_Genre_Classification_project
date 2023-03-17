@@ -210,4 +210,4 @@ def classification_and_evaluation(data_path, normalization_type):
 
 
 if __name__ == '__main__':
-    classification_and_evaluation(const.DATA_PATH, "min_max")
+    classification_and_evaluation(data_path=const.DATA_PATH, normalization_type=const.MIN_MAX_NORM)

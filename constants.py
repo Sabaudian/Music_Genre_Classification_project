@@ -20,7 +20,9 @@ NUM_FTT = 2048
 FRAME_SIZE = 1024
 HOP_LENGHT = 512
 
-# FOR K-MEAN AND SIMILAR
+# FOR VARIOUS COMPUTATION
+STD_NORM = "std"
+MIN_MAX_NORM = "min_max"
 VARIANCE_RATIO = 0.8
 
 # FOR PLOT AND SIMILAR
@@ -47,6 +49,7 @@ FEATURES_VISUALIZATION_PATH = {"blues": "genres_original/blues/blues.00000.wav",
 STORE_PATH = "plot/"
 JPG = ".jpg"
 CORR_MATR_TAG = "correlation_matrix_plot"
+OPT_N_COMP_TAG = "pca_opt_num_of_components_plot"
 PCA_TAG = "pca_scatter_plot"
 K_MEAN_PCA_CC_TAG = "pca_k-mean_cluster_centroids_plot"
 K_MEAN_CONF_MATR_TAG = "k-means_confusion_matrix_plot"

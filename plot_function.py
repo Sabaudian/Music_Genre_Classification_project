@@ -27,7 +27,7 @@ def plot_correlation_matrix(input_data, show_on_screen=True, store_in_folder=Tru
         plt.figure(figsize=(16, 8))
         sns.set(font_scale=0.5)
         sns.heatmap(correlation_matrix,
-                    cmap="coolwarm",
+                    cmap="RdBu",
                     square=True,
                     annot=True,
                     fmt=".2g",
@@ -54,30 +54,8 @@ def plot_pca_opt_num_of_components(input_data, cumulative_evr, show_on_screen=Tr
         plt.title("The number of components needed to explain variance", fontsize=22)
 
         if store_in_folder:
-            plt.savefig("plot/pca_opt_num_of_components_plot.jpg")
+            plt.savefig(const.STORE_PATH + const.OPT_N_COMP_TAG + const.JPG, dpi=300)
         plt.show()
-
-
-def plot_pca(input_pca_data, genre_list, store_in_folder):
-    data = input_pca_data.copy()
-
-    genres = {i: genre_list[i] for i in range(0, len(genre_list))}
-    data.genre = [genres[int(item)] for item in data.genre]
-
-    plt.figure(figsize=(16, 8))
-
-    sns.scatterplot(x="PC1", y="PC2", data=data, hue="genre", marker="o",
-                    palette=const.COLORS_LIST, alpha=0.5, s=50, edgecolor="black", linewidth=1)
-
-    plt.title("PCA on Genres", fontsize=16)
-    plt.xticks(fontsize=14)
-    plt.yticks(fontsize=10)
-    plt.xlabel("Principal Component 1", fontsize=14)
-    plt.ylabel("Principal Component 2", fontsize=14)
-
-    if store_in_folder:
-        plt.savefig(const.STORE_PATH + const.PCA_TAG + const.JPG, dpi=300)
-    plt.show()
 
 
 def plot_clusters(input_pca_data, centroids, labels, colors_list, genres_list, show_on_screen=True,
@@ -95,12 +73,12 @@ def plot_clusters(input_pca_data, centroids, labels, colors_list, genres_list, s
         fig, ax = plt.subplots(figsize=(16, 8))
 
         for genre, group in groups:
-            plt.scatter(group.pca_1, group.pca_2, label=genres[genre], color=colors[genre], edgecolors="black",
+            plt.scatter(group.pca_1, group.pca_2, label=genres[genre], color=colors[genre], edgecolors="gray",
                         alpha=0.6)
             ax.tick_params(axis="x", which="both", bottom="off", top="off", labelbottom="off")
             ax.tick_params(axis="y", which="both", left="off", top="off", labelleft="off")
 
-        plt.plot(centroids[:, 0], centroids[:, 1], "x", ms=15, mec="whitesmoke", mew=2.5)
+        plt.plot(centroids[:, 0], centroids[:, 1], "x", markersize=10, markeredgewidth=2, markeredgecolor="black")
 
         ax.legend(title="Genres:")
         ax.set_title("Genres Music Clusters Results", fontsize=16)

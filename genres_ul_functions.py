@@ -72,7 +72,7 @@ def get_kmeans_model(input_data):
     # centers
     kmeans_centers = kmeans_model.cluster_centers_
 
-    return kmeans_labels, kmeans_centers, kmeans_model
+    return kmeans_labels, kmeans_centers
 
 
 def get_pca_centroids(input_data, input_columns, n_components, centroids):
@@ -97,54 +97,64 @@ def get_pca_centroids(input_data, input_columns, n_components, centroids):
     return pca_data, pca_centroids
 
 
-def k_means_clustering():
-
-    # load normalized data
-    X, y, df = load_data(const.DATA_PATH, "min_max")
-    print("\nData:\n\033[92m{}\033[0m".format(df))
-    print("\nX:\n\033[92m{}\033[0m".format(X))
-    print("\ny:\n\033[92m{}\033[0m".format(y))
+def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_confusion_matrix, show_roc_curve):
 
     # Number of components
-    num_components = number_of_components(input_data=X,
+    num_components = number_of_components(input_data=input_data,
                                           variance_ratio=const.VARIANCE_RATIO,
-                                          show_on_screen=True,
+                                          show_on_screen=False,
                                           store_in_folder=False)
     print("\nNumber of Components: \033[92m{}\033[0m".format(num_components))
 
     # My K-Means model getting label
-    labels, centers, kmeans = get_kmeans_model(X)
+    labels, centers = get_kmeans_model(input_data)
 
     # Get PCA and Centroids
-    pca, centroids = get_pca_centroids(input_data=X.values,
-                                       input_columns=y,
+    pca, centroids = get_pca_centroids(input_data=input_data.values,
+                                       input_columns=input_columns,
                                        n_components=num_components,
                                        centroids=centers)
+    if show_cluster:
+        # Plot clusters
+        plot_function.plot_clusters(input_pca_data=pca[["PC1", "PC2", "genre"]],
+                                    centroids=centroids, labels=labels,
+                                    colors_list=const.COLORS_LIST,
+                                    genres_list=const.GENRES_LIST,
+                                    show_on_screen=True,
+                                    store_in_folder=False)
+    if show_confusion_matrix:
+        # plot confusion matrix
+        plot_function.plot_kmeans_confusion_matrix(data=dataframe,
+                                                   labels=labels,
+                                                   genre_list=const.GENRES_LIST,
+                                                   show_on_screen=True,
+                                                   store_in_folder=False)
+    if show_roc_curve:
+        # plot roc curve
+        plot_function.plot_roc(y_test=input_columns.values,
+                               y_score=labels,
+                               operation_name="K-Means",
+                               genres_list=const.GENRES_LIST,
+                               type_of_learning="UL",
+                               show_on_screen=True,
+                               store_in_folder=False)
 
-    # Plot clusters
-    plot_function.plot_clusters(input_pca_data=pca[["PC1", "PC2", "genre"]],
-                                centroids=centroids, labels=labels,
-                                colors_list=const.COLORS_LIST,
-                                genres_list=const.GENRES_LIST,
-                                show_on_screen=True,
-                                store_in_folder=False)
 
-    # plot confusion matrix
-    plot_function.plot_kmeans_confusion_matrix(data=df,
-                                               labels=labels,
-                                               genre_list=const.GENRES_LIST,
-                                               show_on_screen=True,
-                                               store_in_folder=False)
-    # plot roc curve
-    plot_function.plot_roc(y_test=y.values,
-                           y_score=labels,
-                           operation_name="K-Means",
-                           genres_list=const.GENRES_LIST,
-                           type_of_learning="UL",
-                           show_on_screen=True,
-                           store_in_folder=False)
+def clustering_and_evaluation(data_path, normalization_type):
+    # load normalized data
+    X, y, df = load_data(data_path, normalization_type)
+    print("\nData:\n\033[92m{}\033[0m".format(df))
+    print("\nX:\n\033[92m{}\033[0m".format(X))
+    print("\ny:\n\033[92m{}\033[0m".format(y))
+
+    k_means_clustering(input_data=X,
+                       input_columns=y,
+                       dataframe=df,
+                       show_cluster=True,
+                       show_confusion_matrix=False,
+                       show_roc_curve=False)
 
 
 if __name__ == '__main__':
     # clustering
-    k_means_clustering()
+    clustering_and_evaluation(data_path=const.DATA_PATH, normalization_type=const.MIN_MAX_NORM)
