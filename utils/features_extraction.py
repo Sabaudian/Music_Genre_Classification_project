@@ -13,13 +13,11 @@ def makedir(dir_path):
     # create a new directory
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
-        print("\n Folder " + dir_path + "has been crated successfully!")
 
 
-def features_extraction_to_csv(dataset_path, destination_path):
-
+def features_extraction_to_csv(dataset_path, data_folder, data_path):
     # make new directory for extracted data
-    makedir(destination_path)
+    makedir(data_folder)
 
     # generate a dataset
     header = const.FEATURE_HEADER
@@ -31,12 +29,12 @@ def features_extraction_to_csv(dataset_path, destination_path):
     header = header.split()
 
     # generate file.csv
-    file = open(destination_path, "w", newline="")
+    file = open(data_path, "w", newline="")
     with file:
         writer = csv.writer(file)
         writer.writerow(header)
 
-    for dirpath, dirnames, filenames in os.walk(dataset_path):
+    for dirpath, dirnames, filenames in sorted(os.walk(dataset_path)):
 
         # ensure we're processing a genre sub-folder level
         if dirpath is not dataset_path:
@@ -45,7 +43,7 @@ def features_extraction_to_csv(dataset_path, destination_path):
             semantic_label = dirpath.split("/")[-1]
             print("\nExtracting Features from Folder: \033[92m{}\033[0m".format(semantic_label))
 
-            # process all audio files in genre sub-dir
+             # process all audio files in genre sub-dir
             for f in sorted(filenames):
 
                 print("\033[92m{}\033[0m checked!".format(f))
@@ -72,7 +70,8 @@ def features_extraction_to_csv(dataset_path, destination_path):
                 # energy
                 energy = fc.compute_energy(signal)
                 # entropy of energy
-                entropy_of_energy = fc.compute_entropy_of_energy(signal, num_of_short_blocks=math.ceil(len(signal)/const.FRAME_SIZE))
+                entropy_of_energy = fc.compute_entropy_of_energy(signal, num_of_short_blocks=math.ceil(
+                    len(signal) / const.FRAME_SIZE))
                 # mfcc
                 mfcc = fc.compute_mfcc(signal, sample_rate, const.NUM_MFCC, const.NUM_FTT, const.HOP_LENGHT)
 
@@ -81,11 +80,7 @@ def features_extraction_to_csv(dataset_path, destination_path):
                 for n in mfcc:
                     to_append += f" {np.mean(n)}"
                 to_append += f" {semantic_label}"
-                data_file = open(destination_path, "a", newline="")
+                data_file = open(data_path, "a", newline="")
                 with data_file:
                     writer = csv.writer(data_file)
                     writer.writerow(to_append.split())
-
-
-
-
