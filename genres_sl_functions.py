@@ -26,8 +26,7 @@ def load_data(data_path, type_of_normalization):
     raw_dataset = pd.read_csv(data_path)
     print("\nRaw Dataset Keys:\n\033[92m{}\033[0m".format(raw_dataset.keys()))
     df = raw_dataset.drop(["filename"], axis=1)
-    print("\nData Head:\n\033[92m{}\033[0m".format(df.head()))
-    print("\nData Shape:\n\033[92m{}\033[0m".format(df.shape))
+    print("\nData Shape: \033[92m{}\033[0m".format(df.shape))
 
     # encode genre label as integer values
     # i.e.: blues = 0, ..., rock = 9
@@ -106,7 +105,7 @@ def compute_evaluation_metrics(model, model_name, X_test, y_test):
 def prediction_comparison(model, X_test, y_test):
     # Predict the target vector
     y_predict = model.predict(X_test)
-
+    # Genres
     genres = {i: const.GENRES_LIST[i] for i in range(0, len(const.GENRES_LIST))}
 
     clf_data = pd.DataFrame(columns=["real_genre_num", "predict_genre_num",
@@ -181,7 +180,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                       show_on_screen=True, store_in_folder=False)
         # metrics computation
         clf_report = compute_evaluation_metrics(model=model_type, model_name=model_name, X_test=X_test, y_test=y_test)
-        plot_function.plot_classification_report(clf_report=clf_report, model_name=model_name, show_on_screen=True,
+        plot_function.plot_classification_report(clf_report=clf_report, model_name=model_name, show_on_screen=False,
                                                  store_in_folder=False)
 
 
@@ -209,5 +208,5 @@ def classification_and_evaluation(data_path, normalization_type):
                      show_simple_compare=False)
 
 
-if __name__ == '__main__':
-    classification_and_evaluation(data_path=const.DATA_PATH, normalization_type=const.MIN_MAX_NORM)
+# if __name__ == '__main__':
+#     classification_and_evaluation(data_path=const.DATA_PATH, normalization_type=const.MIN_MAX_NORM)

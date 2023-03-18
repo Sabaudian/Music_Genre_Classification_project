@@ -22,13 +22,15 @@ if __name__ == '__main__':
         # make chunk from og. sound file
         check_if_chunks_exist = input("\n>>> PERMORFORMING DATA AUGMENTATION? [Y/N]: ")
         if check_if_chunks_exist.upper() == "Y":
-            prepare.make_chunks_from_data(dataset_path=const.DATASET_PATH, chunk_length=const.CHUNK_LENGTH,
+            prepare.make_chunks_from_data(dataset_path=const.DATASET_PATH,
+                                          chunk_length=const.CHUNK_LENGTH,
                                           new_dir_path=const.GENRES_3S_PATH)
 
     # extract and visualize features from samples
     check_feature_extraction = input("\n> EXTRACT FEATURES FROM DATA? [Y/N]: ")
     if check_feature_extraction.upper() == "Y":
-        feature.features_extraction_to_csv(dataset_path=const.GENRES_3S_PATH, destination_path=const.DATA_PATH)
+        feature.features_extraction_to_csv(dataset_path=const.GENRES_3S_PATH,
+                                           destination_path=const.DATA_PATH)
     else:  # visualization of features
         check_features_visualization = input("\n> VISUALIZE THE EXTRACTED FEATURES? [Y/N]: ")
         if check_features_visualization.upper() == "Y":
