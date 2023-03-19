@@ -14,7 +14,6 @@ TRACK_DURATION = 30  # measured in seconds
 DURATION = 3  # duration of audio after pre-processing
 
 # USED FOR FEATURES EXTRACTION
-SAMPLES_PER_TRACK = SAMPLE_RATE * TRACK_DURATION
 NUM_MFCC = 20
 NUM_FTT = 2048
 FRAME_SIZE = 1024
@@ -26,6 +25,7 @@ MIN_MAX_NORM = "min_max"
 VARIANCE_RATIO = 0.8
 
 # FOR PLOT AND SIMILAR
+PLOT_FOLDER = "plot"
 COLORS_LIST = {"#006400", "#00008b", "#b03060", "#ff0000", "#ffd700", "#deb887", "#00ff00", "#00ffff", "#ff00ff",
                "#6495ed"}
 PRED_EVA_LIST = {"#006400", "#ffd700"}
@@ -57,3 +57,4 @@ CONF_MATR_TAG = "_confusion_matrix_plot"
 ROC_CURVE_TAG = "_roc_plot"
 PREDICT_BY_GENRES_TAG = "_compare_predictions_by_genres_plot"
 PREDICT_EV_TAG = "_predictions_evaluation_plot"
+CLF_REPORT_TAG = "_clf_report"

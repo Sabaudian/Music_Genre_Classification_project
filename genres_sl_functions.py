@@ -22,7 +22,7 @@ def makedir(dir_path):
 
 
 def load_data(data_path, type_of_normalization):
-    # read df and drop unnecessary column
+    # read file and drop unnecessary column
     raw_dataset = pd.read_csv(data_path)
     print("\nRaw Dataset Keys:\n\033[92m{}\033[0m".format(raw_dataset.keys()))
     df = raw_dataset.drop(["filename"], axis=1)
@@ -148,7 +148,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                 X_test=X_test,
                                                 y_test=y_test,
                                                 show_on_screen=True,
-                                                store_in_folder=False)
+                                                store_in_folder=True)
 
         if model_name == "SVM":
             y_score = model_type.fit(X_train, y_train).decision_function(X_test)
@@ -164,7 +164,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                    genres_list=const.GENRES_LIST,
                                    type_of_learning="SL",
                                    show_on_screen=True,
-                                   store_in_folder=False)
+                                   store_in_folder=True)
 
         if show_compare_prediction_by_genre:
             # Predict the target vector
@@ -172,16 +172,16 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
             # plot histogram
             plot_function.plot_comparison_of_predictions_by_genre(y_test=y_test, y_pred=y_predict,
                                                                   genres_list=const.GENRES_LIST, model_name=model_name,
-                                                                  show_on_screen=True, store_in_folder=False)
+                                                                  show_on_screen=True, store_in_folder=True)
         if show_simple_compare:
             input_data = prediction_comparison(model=model_type, X_test=X_test, y_test=y_test)
             # evaluation actual/prediction
             plot_function.plot_predictions_evaluation(input_data, model_name=model_name, genres_list=const.GENRES_LIST,
-                                                      show_on_screen=True, store_in_folder=False)
+                                                      show_on_screen=True, store_in_folder=True)
         # metrics computation
         clf_report = compute_evaluation_metrics(model=model_type, model_name=model_name, X_test=X_test, y_test=y_test)
-        plot_function.plot_classification_report(clf_report=clf_report, model_name=model_name, show_on_screen=False,
-                                                 store_in_folder=False)
+        plot_function.plot_classification_report(clf_report=clf_report, model_name=model_name, show_on_screen=True,
+                                                 store_in_folder=True)
 
 
 def classification_and_evaluation(data_path, normalization_type):
@@ -190,6 +190,12 @@ def classification_and_evaluation(data_path, normalization_type):
     print("\nData:\n\033[92m{}\033[0m".format(df))
     print("\nX (my data):\n\033[92m{}\033[0m".format(X))
     print("\ny (labels):\n\033[92m{}\033[0m".format(y))
+
+    # Plot correlation matrix
+    if not os.path.exists(const.STORE_PATH + const.CORR_MATR_TAG + const.JPG):
+        plot_function.plot_correlation_matrix(input_data=X,
+                                              show_on_screen=True,
+                                              store_in_folder=True)
 
     # create train/test split
     X_train, X_test, y_train, y_test = prepare_datasets(X=X, y=y, test_size=0.3)
@@ -204,8 +210,8 @@ def classification_and_evaluation(data_path, normalization_type):
 
     clf_models = get_classification_model()
     model_evaluation(models=clf_models, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test,
-                     show_confusion_matrix=False, show_roc_curve=False, show_compare_prediction_by_genre=False,
-                     show_simple_compare=False)
+                     show_confusion_matrix=True, show_roc_curve=True, show_compare_prediction_by_genre=True,
+                     show_simple_compare=True)
 
 
 # if __name__ == '__main__':

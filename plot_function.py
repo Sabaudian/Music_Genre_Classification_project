@@ -1,16 +1,22 @@
+import os
 import numpy as np
 import pandas as pd
 import seaborn as sns
-
 import matplotlib.pyplot as plt
 
 from sklearn import metrics
 from sklearn import preprocessing
-from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.metrics import confusion_matrix
 from itertools import cycle
 
 # my import functions
 import constants as const
+
+
+def makedir(dir_path):
+    # create a new directory
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
 
 
 def plot_correlation_matrix(input_data, show_on_screen=True, store_in_folder=True):
@@ -37,6 +43,7 @@ def plot_correlation_matrix(input_data, show_on_screen=True, store_in_folder=Tru
         plt.title("Correlation between features", fontsize=22)
 
         if store_in_folder:
+            makedir(const.PLOT_FOLDER)
             plt.savefig(const.STORE_PATH + const.CORR_MATR_TAG + const.JPG, dpi=300)
         plt.show()
 
@@ -54,6 +61,7 @@ def plot_pca_opt_num_of_components(input_data, cumulative_evr, show_on_screen=Tr
         plt.title("The number of components needed to explain variance", fontsize=22)
 
         if store_in_folder:
+            makedir(const.PLOT_FOLDER)
             plt.savefig(const.STORE_PATH + const.OPT_N_COMP_TAG + const.JPG, dpi=300)
         plt.show()
 
@@ -80,10 +88,11 @@ def plot_clusters(input_pca_data, centroids, labels, colors_list, genres_list, s
 
         plt.plot(centroids[:, 0], centroids[:, 1], "x", markersize=10, markeredgewidth=2, markeredgecolor="black")
 
-        ax.legend(title="Genres:")
-        ax.set_title("Genres Music Clusters Results", fontsize=16)
+        ax.legend(title="Genres:", fontsize=10)
+        ax.set_title("Genres Music Clusters Results", fontsize=22)
 
         if store_in_folder:
+            makedir(const.PLOT_FOLDER)
             plt.savefig(const.STORE_PATH + const.K_MEAN_PCA_CC_TAG + const.JPG, dpi=300)
         plt.show()
 
@@ -96,13 +105,21 @@ def plot_kmeans_confusion_matrix(data, labels, genre_list, show_on_screen=True, 
 
     if show_on_screen:
         plt.figure(figsize=(16, 8))
-        sns.heatmap(conf_matrix, cmap="Blues", annot=True, fmt="g", annot_kws={"size": 8},
-                    square=True, xticklabels=const.GENRES_LIST, yticklabels=const.GENRES_LIST)
+        ax = sns.heatmap(conf_matrix,
+                         cmap="Blues",
+                         annot=True,
+                         fmt="g",
+                         annot_kws={"size": 10},
+                         square=True,
+                         xticklabels=const.GENRES_LIST,
+                         yticklabels=const.GENRES_LIST)
+        ax.tick_params(labelsize=10)
         plt.xlabel("Predicted Labels", fontsize=16)
         plt.ylabel("True Labels", fontsize=16)
         plt.title("Confusion Matrix for K-Means", fontsize=22)
 
         if store_in_folder:
+            makedir(const.PLOT_FOLDER)
             plt.savefig(const.STORE_PATH + const.K_MEAN_CONF_MATR_TAG + const.JPG, dpi=300)
         plt.show()
 
@@ -113,27 +130,27 @@ def plot_confusion_matrix(model, model_name, X_train, y_train, X_test, y_test,
     model.fit(X_train, y_train)
     # Predict the target vector
     predicts = model.predict(X_test)
-    # Accuracy da cancellare
-    print("{} Accuracy: {}".format(model_name, round(accuracy_score(y_test, predicts), 5)))
 
     if show_on_screen:
         # Plot confusion matrix
         conf_matrix = confusion_matrix(y_test, predicts)
         plt.figure(figsize=(16, 8))
-        sns.heatmap(conf_matrix,
-                    cmap="Blues",
-                    annot=True,
-                    fmt="g",
-                    annot_kws={"size": 8},
-                    square=True,
-                    xticklabels=const.GENRES_LIST,
-                    yticklabels=const.GENRES_LIST)
+        ax = sns.heatmap(conf_matrix,
+                         cmap="Blues",
+                         annot=True,
+                         fmt="g",
+                         annot_kws={"size": 8},
+                         square=True,
+                         xticklabels=const.GENRES_LIST,
+                         yticklabels=const.GENRES_LIST)
+        ax.tick_params(labelsize=10)
         plt.xlabel("Predicted Labels", fontsize=16)
         plt.ylabel("True Labels", fontsize=16)
         plt.title("Confusion Matrix - {}".format(model_name), fontsize=22)
 
+        # save plot into folder
         if store_in_folder:
-            # save plot into folder
+            makedir(const.PLOT_FOLDER)
             plt.savefig(const.STORE_PATH + model_name + const.CONF_MATR_TAG + const.JPG)
         plt.show()
 
@@ -178,6 +195,7 @@ def plot_roc(y_test, y_score, operation_name, genres_list, type_of_learning="SL"
         plt.legend(loc="lower right", prop={"size": 12})
 
         if store_in_folder:
+            makedir(const.PLOT_FOLDER)
             plt.savefig(const.STORE_PATH + operation_name.replace(" ", "_") + const.ROC_CURVE_TAG + const.JPG, dpi=300)
         plt.show()
 
@@ -199,6 +217,7 @@ def plot_comparison_of_predictions_by_genre(y_test, y_pred, genres_list, model_n
                             (plot.get_x() + (plot.get_width() / 2), plot.get_height()), ha="center",
                             va="center", xytext=(0.3, 10), textcoords="offset points", fontsize=5, rotation=90)
         if store_in_folder:
+            makedir(const.PLOT_FOLDER)
             plt.savefig(const.STORE_PATH + model_name.replace(" ", "_") + const.PREDICT_BY_GENRES_TAG + const.JPG,
                         dpi=300)
         plt.show()
@@ -219,7 +238,8 @@ def plot_predictions_evaluation(input_data, model_name, genres_list, show_on_scr
                         (p.get_x() + (p.get_width() / 2), p.get_height()), ha="center", va="center",
                         xytext=(0, 5), textcoords="offset points", fontsize=10, rotation=0)
         if store_in_folder:
-            plt.savefig(const.STORE_PATH + model_name.replace(" ", "_") + const.PREDICT_EV_TAG + const.JPG, dpi=300)
+            makedir(const.PLOT_FOLDER)
+            plt.savefig(const.STORE_PATH + model_name + const.PREDICT_EV_TAG + const.JPG, dpi=300)
         plt.show()
 
 
@@ -238,12 +258,12 @@ def plot_classification_report(clf_report, model_name, show_on_screen=True, stor
                          linecolor="black",
                          cbar=True,
                          clip_on=False)
-        ax.tick_params(labelsize=14)
+        ax.tick_params(labelsize=10)
         plt.title("{} Classification report".format(model_name), fontsize=22)
         plt.xlabel("Metrics", fontsize=18)
         plt.ylabel("Classes", fontsize=18)
 
         if store_in_folder:
-            plt.savefig(const.STORE_PATH + model_name.replace(" ", "_") + "_clf_report" + const.JPG, dpi=300)
+            makedir(const.PLOT_FOLDER)
+            plt.savefig(const.STORE_PATH + model_name + const.CLF_REPORT_TAG + const.JPG, dpi=300)
         plt.show()
-

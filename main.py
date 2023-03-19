@@ -1,5 +1,6 @@
 import genres_sl_functions
 import genres_ul_functions
+import plot_function
 
 from utils import prepare_dataset as prepare
 from utils import features_extraction as feature
@@ -33,7 +34,7 @@ if __name__ == '__main__':
                                            data_folder=const.DATA_FOLDER,
                                            data_path=const.DATA_PATH)
     else:  # visualization of features
-        check_features_visualization = input("\n> VISUALIZE THE EXTRACTED FEATURES? [Y/N]: ")
+        check_features_visualization = input("\n> FEATURES VISUALIZATION? [Y/N]: ")
         if check_features_visualization.upper() == "Y":
             visualize.visualize_features()
 

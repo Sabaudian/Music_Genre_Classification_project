@@ -1,3 +1,5 @@
+import os.path
+
 import numpy as np
 import pandas as pd
 
@@ -11,22 +13,21 @@ import plot_function
 
 
 def load_data(data_path, type_of_normalization):
-    # read data from csv
+    # read file and drop unnecessary column
     raw_dataset = pd.read_csv(data_path)
     print("\nRaw Dataset Keys:\n\033[92m{}\033[0m".format(raw_dataset.keys()))
-
-    # drop unnecessary column
-    data = raw_dataset.drop(["filename"], axis=1)
+    df = raw_dataset.drop(["filename"], axis=1)
+    print("\nData Shape: \033[92m{}\033[0m".format(df.shape))
 
     # encode genre label as integer values
     # i.e.: blues = 0, ..., rock = 9
     encoder = preprocessing.OrdinalEncoder()
-    data["genre"] = encoder.fit_transform(data[["genre"]])
+    df["genre"] = encoder.fit_transform(df[["genre"]])
 
     # split df into x and y
     label_column = "genre"
-    X = data.loc[:, data.columns != label_column]
-    y = data.loc[:, label_column]
+    X = df.loc[:, df.columns != label_column]
+    y = df.loc[:, label_column]
 
     # normalization
     X_columns = X.columns
@@ -42,7 +43,7 @@ def load_data(data_path, type_of_normalization):
     X = pd.DataFrame(np_scaled, columns=X_columns)
     y = pd.DataFrame(y).fillna(0).astype(int)
 
-    return X, y, data
+    return X, y, df
 
 
 def number_of_components(input_data, variance_ratio, show_on_screen=True, store_in_folder=True):
@@ -102,8 +103,8 @@ def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_
     # Number of components
     num_components = number_of_components(input_data=input_data,
                                           variance_ratio=const.VARIANCE_RATIO,
-                                          show_on_screen=False,
-                                          store_in_folder=False)
+                                          show_on_screen=True,
+                                          store_in_folder=True)
     print("\nNumber of Components: \033[92m{}\033[0m".format(num_components))
 
     # My K-Means model getting label
@@ -121,14 +122,14 @@ def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_
                                     colors_list=const.COLORS_LIST,
                                     genres_list=const.GENRES_LIST,
                                     show_on_screen=True,
-                                    store_in_folder=False)
+                                    store_in_folder=True)
     if show_confusion_matrix:
         # plot confusion matrix
         plot_function.plot_kmeans_confusion_matrix(data=dataframe,
                                                    labels=labels,
                                                    genre_list=const.GENRES_LIST,
                                                    show_on_screen=True,
-                                                   store_in_folder=False)
+                                                   store_in_folder=True)
     if show_roc_curve:
         # plot roc curve
         plot_function.plot_roc(y_test=input_columns.values,
@@ -137,7 +138,7 @@ def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_
                                genres_list=const.GENRES_LIST,
                                type_of_learning="UL",
                                show_on_screen=True,
-                               store_in_folder=False)
+                               store_in_folder=True)
 
 
 def clustering_and_evaluation(data_path, normalization_type):
@@ -147,12 +148,18 @@ def clustering_and_evaluation(data_path, normalization_type):
     print("\nX:\n\033[92m{}\033[0m".format(X))
     print("\ny:\n\033[92m{}\033[0m".format(y))
 
+    # Plot correlation matrix
+    if not os.path.exists(const.STORE_PATH + const.CORR_MATR_TAG + const.JPG):
+        plot_function.plot_correlation_matrix(input_data=X,
+                                              show_on_screen=True,
+                                              store_in_folder=True)
+    # k-means model and evaluation
     k_means_clustering(input_data=X,
                        input_columns=y,
                        dataframe=df,
                        show_cluster=True,
-                       show_confusion_matrix=False,
-                       show_roc_curve=False)
+                       show_confusion_matrix=True,
+                       show_roc_curve=True)
 
 
 # if __name__ == '__main__':
