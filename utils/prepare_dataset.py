@@ -12,7 +12,7 @@ def makedir(dir_path):
         print("\n Folder " + dir_path + "has been crated successfully!")
 
 
-def check_sound_duration(dataset_path):
+def check_sound_duration(dataset_path, milliseconds_duration):
 
     print("\n Checking audio file duration...")
 
@@ -28,15 +28,18 @@ def check_sound_duration(dataset_path):
                 # pick file extension
                 extension = f.split(".")[-1]
 
-                # control the duration -> at lest 30000 ms
+                # control the duration -> at lest milliseconds_duration (30000 ms)
                 file_path = os.path.join(dirpath, f)
                 sound = AudioSegment.from_file(file_path, format=extension)
                 duration_in_milliseconds = len(sound)
-                if duration_in_milliseconds < 30000:
-                    # pick file with wrong duration
+
+                # if it is less than my threshold add silence
+                if duration_in_milliseconds < milliseconds_duration:
+
+                    # pick file with duration less milliseconds_duration
                     print("\n- File: \033[92m{}\033[0m, Duration: \033[92m{}\033[0m".format(f, duration_in_milliseconds))
                     # compute duration difference between my threshold and sound duration
-                    duration_difference = 30000 - len(sound)
+                    duration_difference = milliseconds_duration - len(sound)
                     # append silence to reach the minimum quota
                     new_file_duration = sound[:len(sound)] + AudioSegment.silent(duration=duration_difference)
                     print("\n-- Adjust Duration to: \033[92m{}\033[0m".format(len(new_file_duration)))
@@ -109,6 +112,6 @@ def make_chunks_from_data(dataset_path, chunk_length, new_dir_path):
                             chunk.export(output_path, format=file_extension)
         print("\n...all data has been processed!\n")
     else:
-        print("\n The data has already been processed. => Proceed with the extraction.")
+        print("\n The data has already been processed! Proceed with the features extraction")
 
 

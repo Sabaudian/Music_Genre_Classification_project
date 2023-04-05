@@ -5,13 +5,14 @@ DATA_FOLDER = "data"  # location of my data
 DATA_PATH = "data/data.csv"  # extracted feature
 CLF_REPORT_PATH = "clf_report"  # location of classification models' report
 CHUNK_LENGTH = 3000  # new length of chunks of audio sample
+DURATION_MS = 30000  # file duration in milliseconds
 FEATURE_HEADER = "filename chroma_stft_mean rms_mean spectral_centroid_mean spectral_bandwidth_mean rolloff_mean zero_crossing_rate_mean tempo energy entropy_of_entropy"
 GENRES = "blues classical country disco hiphop jazz metal pop reggae rock"
 
 # AUDIO CHARACTERISTICS
 SAMPLE_RATE = 22050
 TRACK_DURATION = 30  # measured in seconds
-DURATION = 3  # duration of audio after pre-processing
+DURATION = 3  # duration of audio after pre-processing in seconds
 
 # USED FOR FEATURES EXTRACTION
 NUM_MFCC = 20

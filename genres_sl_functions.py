@@ -113,6 +113,7 @@ def prediction_comparison(model, X_test, y_test):
     clf_data["real_genre_num"] = y_test.astype(int)
     clf_data["predict_genre_num"] = y_predict.astype(int)
 
+    # compare real values with predicted values
     comparison_column = np.where(clf_data["real_genre_num"] == clf_data["predict_genre_num"], True, False)
     clf_data["check"] = comparison_column
 
@@ -170,17 +171,26 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
             # Predict the target vector
             y_predict = model_type.predict(X_test)
             # plot histogram
-            plot_function.plot_comparison_of_predictions_by_genre(y_test=y_test, y_pred=y_predict,
-                                                                  genres_list=const.GENRES_LIST, model_name=model_name,
-                                                                  show_on_screen=True, store_in_folder=True)
+            plot_function.plot_comparison_of_predictions_by_genre(y_test=y_test,
+                                                                  y_pred=y_predict,
+                                                                  genres_list=const.GENRES_LIST,
+                                                                  model_name=model_name,
+                                                                  show_on_screen=True,
+                                                                  store_in_folder=True)
         if show_simple_compare:
             input_data = prediction_comparison(model=model_type, X_test=X_test, y_test=y_test)
             # evaluation actual/prediction
-            plot_function.plot_predictions_evaluation(input_data, model_name=model_name, genres_list=const.GENRES_LIST,
-                                                      show_on_screen=True, store_in_folder=True)
+            plot_function.plot_predictions_evaluation(input_data=input_data,
+                                                      model_name=model_name,
+                                                      genres_list=const.GENRES_LIST,
+                                                      show_on_screen=True,
+                                                      store_in_folder=True)
         # metrics computation
         clf_report = compute_evaluation_metrics(model=model_type, model_name=model_name, X_test=X_test, y_test=y_test)
-        plot_function.plot_classification_report(clf_report=clf_report, model_name=model_name, show_on_screen=True,
+        # plot classification report
+        plot_function.plot_classification_report(clf_report=clf_report,
+                                                 model_name=model_name,
+                                                 show_on_screen=True,
                                                  store_in_folder=True)
 
 
@@ -208,6 +218,7 @@ def classification_and_evaluation(data_path, normalization_type):
           " records out of \033[92m{}\033[0m"
           " which is \033[92m{}%\033[0m\n".format(X_test.shape[0], len(df), round(X_test.shape[0] / len(df) * 100)))
 
+    # models and classification
     clf_models = get_classification_model()
     model_evaluation(models=clf_models, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test,
                      show_confusion_matrix=True, show_roc_curve=True, show_compare_prediction_by_genre=True,
