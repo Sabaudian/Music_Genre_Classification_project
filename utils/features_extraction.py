@@ -25,6 +25,7 @@ def features_extraction_to_csv(dataset_path, data_folder, data_path):
     # update header with MFCCs and genre label
     for n_mfcc in range(1, 21):
         header += f" mfcc{n_mfcc}_mean"
+        header += f" mfcc{n_mfcc}_var"
     header += " genre"
 
     header = header.split()
@@ -76,14 +77,19 @@ def features_extraction_to_csv(dataset_path, data_folder, data_path):
                 # mfcc
                 mfcc = fc.compute_mfcc(signal, sample_rate, const.NUM_MFCC, const.NUM_FTT, const.HOP_LENGHT)
 
-                to_append = f"{f} {np.mean(chroma_stft)} {np.mean(rms)} {np.mean(spec_centroid)} " \
-                            f"{np.mean(spec_bandwidth)} {np.mean(rolloff)} {np.mean(zcr)} {np.mean(tempo)} " \
-                            f"{np.mean(energy)} {np.mean(entropy_of_energy)}"
+                to_append = f"{f} {np.mean(chroma_stft)} {np.var(chroma_stft)} {np.mean(rms)} {np.var(rms)} " \
+                            f"{np.mean(spec_centroid)} {np.var(spec_centroid)} {np.mean(spec_bandwidth)} " \
+                            f"{np.var(spec_bandwidth)} {np.mean(rolloff)} {np.var(rolloff)} {np.mean(zcr)} " \
+                            f"{np.var(zcr)} {np.mean(tempo)} {np.mean(energy)} {np.mean(entropy_of_energy)}"
 
+                # MFCCs_
                 for n in mfcc:
-                    to_append += f" {np.mean(n)}"  # append MFCCs
-                to_append += f" {semantic_label}"  # append genre label
+                    to_append += f" {np.mean(n)}"  # append MFCCs_mean
+                    to_append += f" {np.var(n)}"   # append MFCCs_var
+                to_append += f" {semantic_label}"  # append genre
                 data_file = open(data_path, "a", newline="")
+
+                # write data to file
                 with data_file:  # write data to file
                     writer = csv.writer(data_file)
                     writer.writerow(to_append.split())

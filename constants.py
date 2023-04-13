@@ -6,7 +6,7 @@ DATA_PATH = "data/data.csv"  # extracted feature
 CLF_REPORT_PATH = "clf_report"  # location of classification models' report
 CHUNK_LENGTH = 3000  # new length of chunks of audio sample
 DURATION_MS = 30000  # file duration in milliseconds
-FEATURE_HEADER = "filename chroma_stft_mean rms_mean spectral_centroid_mean spectral_bandwidth_mean rolloff_mean zero_crossing_rate_mean tempo energy entropy_of_entropy"
+FEATURE_HEADER = "filename chroma_stft_mean chroma_stft_var rms_mean rms_var spectral_centroid_mean spectral_centroid_var spectral_bandwidth_mean spectral_bandwidth_var rolloff_mean rolloff_var zero_crossing_rate_mean zero_crossing_rate_var tempo energy entropy_of_entropy"
 GENRES = "blues classical country disco hiphop jazz metal pop reggae rock"
 
 # AUDIO CHARACTERISTICS
@@ -23,7 +23,7 @@ HOP_LENGHT = 512
 # FOR VARIOUS COMPUTATION
 STD_NORM = "std"
 MIN_MAX_NORM = "min_max"
-VARIANCE_RATIO = 0.8
+VARIANCE_RATIO = 0.80
 
 # FOR PLOT AND SIMILAR
 PLOT_FOLDER = "plot"
@@ -31,10 +31,6 @@ COLORS_LIST = {"#006400", "#00008b", "#b03060", "#ff0000", "#ffd700", "#deb887",
                "#6495ed"}
 PRED_EVA_LIST = {"#006400", "#ffd700"}
 GENRES_LIST = ["blues", "classical", "country", "disco", "hiphop", "jazz", "metal", "pop", "reggae", "rock"]
-FEATURES_LIST = ["chroma_stft", "rms", "spectral_centroid", "spectral_bandwidth", "rolloff", "zcr", "tempo", "energy",
-                 "entropy", "mfcc_1", "mfcc_2", "mfcc_3", "mfcc_4", "mfcc_5", "mfcc_6", "mfcc_7", "mfcc_8", "mfcc_9",
-                 "mfcc_10", "mfcc_11", "mfcc_12", "mfcc_13", "mfcc_14", "mfcc_15", "mfcc_16", "mfcc_17", "mfcc_18",
-                 "mfcc_19", "mfcc_20"]
 FEATURES_VISUALIZATION_PATH = {"blues": "genres_original/blues/blues.00000.wav",
                                "classical": "genres_original/classical/classical.00000.wav",
                                "country": "genres_original/country/country.00000.wav",
@@ -52,7 +48,7 @@ JPG = ".jpg"
 CORR_MATR_TAG = "correlation_matrix_plot"
 OPT_N_COMP_TAG = "pca_opt_num_of_components_plot"
 PCA_TAG = "pca_scatter_plot"
-K_MEAN_PCA_CC_TAG = "pca_k-mean_cluster_centroids_plot"
+K_MEAN_PCA_CC_TAG = "pca_k-means_cluster_centroids_plot"
 K_MEAN_CONF_MATR_TAG = "k-means_confusion_matrix_plot"
 CONF_MATR_TAG = "_confusion_matrix_plot"
 ROC_CURVE_TAG = "_roc_plot"

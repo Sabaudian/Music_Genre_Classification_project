@@ -88,7 +88,7 @@ def get_pca_centroids(input_data, input_columns, n_components, centroids):
 
     df = pd.DataFrame(data=principal_components, columns=column_components)
     print("\nPCA Variance Ratio For \033[92m{}\033[0m "
-          "Components: \033[92m{}\033[0m".format(n_components, pca.explained_variance_ratio_.sum()))
+          "Components: \033[92m{:.4f}\033[0m".format(n_components, pca.explained_variance_ratio_.sum()))
 
     # concatenate with target label
     pca_data = pd.concat([df.reset_index(drop=True), input_columns.reset_index(drop=True)], axis=1)
@@ -105,9 +105,9 @@ def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_
                                           variance_ratio=const.VARIANCE_RATIO,
                                           show_on_screen=True,
                                           store_in_folder=True)
-    print("\nNumber of Components: \033[92m{}\033[0m".format(num_components))
+    # print("\nNumber of Components: \033[92m{}\033[0m".format(num_components))
 
-    # My K-Means model getting label
+    # My K-Means model getting labels and centers
     labels, centers = get_kmeans_model(input_data)
 
     # Get PCA and Centroids

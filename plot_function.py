@@ -30,17 +30,16 @@ def plot_correlation_matrix(input_data, show_on_screen=True, store_in_folder=Tru
                 correlated_features.add(correlation_matrix.columns[i])
 
     if show_on_screen:
-        plt.figure(figsize=(16, 8))
+        plt.figure(figsize=(16, 8.5))
         sns.set(font_scale=0.5)
         sns.heatmap(correlation_matrix,
-                    cmap="RdBu",
-                    square=True,
+                    cmap="coolwarm",
                     annot=True,
-                    fmt=".2g",
+                    fmt=".1g",
                     annot_kws={"size": 5},
-                    xticklabels=const.FEATURES_LIST,
-                    yticklabels=const.FEATURES_LIST)
-        plt.title("Correlation between features", fontsize=22)
+                    xticklabels=input_data.keys(),
+                    yticklabels=input_data.keys())
+        plt.title("Correlation between features", fontsize=18)
 
         if store_in_folder:
             makedir(const.PLOT_FOLDER)
@@ -54,8 +53,8 @@ def plot_pca_opt_num_of_components(input_data, cumulative_evr, show_on_screen=Tr
         plt.plot(range(1, len(input_data.columns) + 1), cumulative_evr, marker="o", linestyle="--")
         plt.axhline(y=const.VARIANCE_RATIO, color="red", linestyle="-")
         plt.text(24, 0.81, "80% cut-off threshold", color="red", fontsize=16)
-        plt.grid()
-        plt.xticks(range(1, len(input_data.columns) + 1))
+        plt.xticks(range(1, len(input_data.columns) + 1), fontsize=10)
+        plt.yticks(fontsize=10)
         plt.xlabel("Number of Components", fontsize=18)
         plt.ylabel("Cumulative Explained Variance (%)", fontsize=18)
         plt.title("The number of components needed to explain variance", fontsize=22)
@@ -81,15 +80,15 @@ def plot_clusters(input_pca_data, centroids, labels, colors_list, genres_list, s
         fig, ax = plt.subplots(figsize=(16, 8))
 
         for genre, group in groups:
-            plt.scatter(group.pca_1, group.pca_2, label=genres[genre], color=colors[genre], edgecolors="gray",
+            plt.scatter(group.pca_1, group.pca_2, label=genres[genre], color=colors[genre], edgecolors="black",
                         alpha=0.6)
             ax.tick_params(axis="x", which="both", bottom="off", top="off", labelbottom="off")
             ax.tick_params(axis="y", which="both", left="off", top="off", labelleft="off")
 
-        plt.plot(centroids[:, 0], centroids[:, 1], "x", markersize=10, markeredgewidth=2, markeredgecolor="black")
+        plt.plot(centroids[:, 0], centroids[:, 1], "x", markersize=10, markeredgewidth=2, markeredgecolor="white")
 
-        ax.legend(title="Genres:", fontsize=10)
-        ax.set_title("Genres Music Clusters Results", fontsize=22)
+        ax.legend(title="Music Genres:", fontsize=10)
+        ax.set_title("Music Genres Clusters", fontsize=22)
 
         if store_in_folder:
             makedir(const.PLOT_FOLDER)
@@ -139,7 +138,7 @@ def plot_confusion_matrix(model, model_name, X_train, y_train, X_test, y_test,
                          cmap="Blues",
                          annot=True,
                          fmt="g",
-                         annot_kws={"size": 8},
+                         annot_kws={"size": 10},
                          square=True,
                          xticklabels=const.GENRES_LIST,
                          yticklabels=const.GENRES_LIST)

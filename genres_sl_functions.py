@@ -220,8 +220,14 @@ def classification_and_evaluation(data_path, normalization_type):
 
     # models and classification
     clf_models = get_classification_model()
-    model_evaluation(models=clf_models, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test,
-                     show_confusion_matrix=True, show_roc_curve=True, show_compare_prediction_by_genre=True,
+    model_evaluation(models=clf_models,
+                     X_train=X_train,
+                     y_train=y_train,
+                     X_test=X_test,
+                     y_test=y_test,
+                     show_confusion_matrix=True,
+                     show_roc_curve=True,
+                     show_compare_prediction_by_genre=True,
                      show_simple_compare=True)
 
 
