@@ -67,6 +67,7 @@ def plot_pca_opt_num_of_components(input_data, cumulative_evr, show_on_screen=Tr
 
 def plot_clusters(input_pca_data, centroids, labels, colors_list, genres_list, show_on_screen=True,
                   store_in_folder=True):
+
     pca_1, pca_2, genre = input_pca_data["PC1"], input_pca_data["PC2"], input_pca_data["genre"]
 
     colors = {v: k for v, k in enumerate(colors_list)}
@@ -97,6 +98,7 @@ def plot_clusters(input_pca_data, centroids, labels, colors_list, genres_list, s
 
 
 def plot_kmeans_confusion_matrix(data, labels, genre_list, show_on_screen=True, store_in_folder=True):
+
     data["predicted_label"] = labels
     conf_matrix_data = metrics.confusion_matrix(data["genre"], data["predicted_label"])
 
