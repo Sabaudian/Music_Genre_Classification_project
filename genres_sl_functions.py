@@ -70,10 +70,10 @@ def get_classification_model():
     models.update({"NN": nn_model})
 
     # Random forest
-    rf_model = RandomForestClassifier(n_estimators=1000, max_depth=10, random_state=0)
+    rf_model = RandomForestClassifier(n_estimators=1000, max_depth=10, random_state=10)
     models.update({"RF": rf_model})
 
-    # k-Nearest Neighbor
+    # k-Nearest Neighbors
     knn_model = KNeighborsClassifier(weights="distance")
     models.update({"KNN": knn_model})
 

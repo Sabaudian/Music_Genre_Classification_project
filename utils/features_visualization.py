@@ -206,7 +206,8 @@ def visualize_features():
         # plot
         chromagram = features_computation.compute_chroma_stft(signal, sample_rate, const.NUM_FTT, const.HOP_LENGHT)
         plot_chromagram = librosa.display.specshow(chromagram, sr=sample_rate, hop_length=const.HOP_LENGHT,
-                                                   x_axis="time", y_axis="chroma", cmap="coolwarm", ax=ax[rows][columns])
+                                                   x_axis="time", y_axis="chroma", cmap="coolwarm",
+                                                   ax=ax[rows][columns])
         fig.colorbar(plot_chromagram, ax=ax[rows][columns])
 
         # set genre of signal as title
@@ -224,7 +225,9 @@ def visualize_features():
     # MFCCs
     fig, ax = plt.subplots(nrows=5, ncols=2, figsize=(16, 8.2))
     fig.suptitle("MFCCs", fontsize=14)
-    rows, columns = 0, 0
+
+    rows = 0
+    columns = 0
 
     for key, value in genres.items():
         # load signal
