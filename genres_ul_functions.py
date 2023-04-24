@@ -68,7 +68,7 @@ def number_of_components(input_data, variance_ratio, show_on_screen=True, store_
 
 def get_kmeans_model(input_data):
     # Kmeans model
-    kmeans_model = KMeans(n_clusters=3, init="k-means++", n_init="auto").fit(input_data)
+    kmeans_model = KMeans(n_clusters=10, init="k-means++", n_init="auto").fit(input_data)
     # labels
     kmeans_labels = kmeans_model.labels_
     # centers
