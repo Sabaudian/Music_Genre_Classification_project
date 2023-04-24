@@ -21,12 +21,14 @@ FRAME_SIZE = 1024
 HOP_LENGHT = 512
 
 # FOR VARIOUS COMPUTATION
-STD_NORM = "std"
-MIN_MAX_NORM = "min_max"
+STD = "std"
+MIN_MAX = "min_max"
 VARIANCE_RATIO = 0.80
 
 # FOR PLOT AND SIMILAR
 PLOT_FOLDER = "plot"
+CLASSIFICATION_PLOT_FOLDER = "classification_results"
+CLUSTERING_PLOT_FOLDER = "clustering_results"
 COLORS_LIST = {"#006400", "#00008b", "#b03060", "#ff0000", "#ffd700", "#deb887", "#00ff00", "#00ffff", "#ff00ff",
                "#6495ed"}
 PRED_EVA_LIST = {"#006400", "#ffd700"}

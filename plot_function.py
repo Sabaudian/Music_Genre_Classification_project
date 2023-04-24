@@ -58,16 +58,17 @@ def plot_pca_opt_num_of_components(input_data, cumulative_evr, show_on_screen=Tr
         plt.xlabel("Number of Components", fontsize=18)
         plt.ylabel("Cumulative Explained Variance (%)", fontsize=18)
         plt.title("The number of components needed to explain variance", fontsize=22)
+        plt.grid()
 
         if store_in_folder:
-            makedir(const.PLOT_FOLDER)
-            plt.savefig(const.STORE_PATH + const.OPT_N_COMP_TAG + const.JPG, dpi=300)
+            makedir(const.PLOT_FOLDER + "/" + const.CLUSTERING_PLOT_FOLDER)
+            plt.savefig(const.PLOT_FOLDER + "/" + const.CLUSTERING_PLOT_FOLDER + "/" + const.OPT_N_COMP_TAG + const.JPG,
+                        dpi=300)
         plt.show()
 
 
 def plot_clusters(input_pca_data, centroids, labels, colors_list, genres_list, show_on_screen=True,
                   store_in_folder=True):
-
     pca_1, pca_2, genre = input_pca_data["PC1"], input_pca_data["PC2"], input_pca_data["genre"]
 
     colors = {v: k for v, k in enumerate(colors_list)}
@@ -81,27 +82,27 @@ def plot_clusters(input_pca_data, centroids, labels, colors_list, genres_list, s
         fig, ax = plt.subplots(figsize=(16, 8))
 
         for genre, group in groups:
-            plt.scatter(group.pca_1, group.pca_2, label=genres[genre], color=colors[genre], edgecolors="black",
-                        alpha=0.6)
+            plt.scatter(group.pca_1, group.pca_2, label=genres[genre], color=colors[genre], edgecolors="white",
+                        alpha=0.5)
             ax.tick_params(axis="x", which="both", bottom="off", top="off", labelbottom="off")
             ax.tick_params(axis="y", which="both", left="off", top="off", labelleft="off")
+            ax.set_facecolor("gainsboro")
 
-        plt.plot(centroids[:, 0], centroids[:, 1], "x", markersize=10, markeredgewidth=2, markeredgecolor="white")
+        plt.plot(centroids[:, 0], centroids[:, 1], "x", markersize=10, markeredgewidth=2, markeredgecolor="black")
 
-        ax.legend(title="Music Genres:", fontsize=10)
+        ax.legend(title="Genres:", fontsize=10)
         ax.set_title("Music Genres Clusters", fontsize=22)
 
         if store_in_folder:
-            makedir(const.PLOT_FOLDER)
-            plt.savefig(const.STORE_PATH + const.K_MEAN_PCA_CC_TAG + const.JPG, dpi=300)
+            makedir(const.PLOT_FOLDER + "/" + const.CLUSTERING_PLOT_FOLDER)
+            plt.savefig(const.PLOT_FOLDER + "/" + const.CLUSTERING_PLOT_FOLDER + "/" + const.K_MEAN_PCA_CC_TAG +
+                        const.JPG, dpi=300)
         plt.show()
 
 
 def plot_kmeans_confusion_matrix(data, labels, genre_list, show_on_screen=True, store_in_folder=True):
-
     data["predicted_label"] = labels
     conf_matrix_data = metrics.confusion_matrix(data["genre"], data["predicted_label"])
-
     conf_matrix = pd.DataFrame(conf_matrix_data, columns=np.unique(genre_list), index=np.unique(genre_list))
 
     if show_on_screen:
@@ -120,8 +121,10 @@ def plot_kmeans_confusion_matrix(data, labels, genre_list, show_on_screen=True, 
         plt.title("Confusion Matrix for K-Means", fontsize=22)
 
         if store_in_folder:
-            makedir(const.PLOT_FOLDER)
-            plt.savefig(const.STORE_PATH + const.K_MEAN_CONF_MATR_TAG + const.JPG, dpi=300)
+            makedir(const.PLOT_FOLDER + "/" + const.CLUSTERING_PLOT_FOLDER)
+            plt.savefig(
+                const.PLOT_FOLDER + "/" + const.CLUSTERING_PLOT_FOLDER + "/" + const.K_MEAN_CONF_MATR_TAG + const.JPG,
+                dpi=300)
         plt.show()
 
 
@@ -151,8 +154,9 @@ def plot_confusion_matrix(model, model_name, X_train, y_train, X_test, y_test,
 
         # save plot into folder
         if store_in_folder:
-            makedir(const.PLOT_FOLDER)
-            plt.savefig(const.STORE_PATH + model_name + const.CONF_MATR_TAG + const.JPG)
+            makedir(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER)
+            plt.savefig(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER + "/" + model_name +
+                        const.CONF_MATR_TAG + const.JPG)
         plt.show()
 
 
@@ -196,8 +200,17 @@ def plot_roc(y_test, y_score, operation_name, genres_list, type_of_learning="SL"
         plt.legend(loc="lower right", prop={"size": 12})
 
         if store_in_folder:
-            makedir(const.PLOT_FOLDER)
-            plt.savefig(const.STORE_PATH + operation_name.replace(" ", "_") + const.ROC_CURVE_TAG + const.JPG, dpi=300)
+
+            # plot roc curve for classification methods
+            if type_of_learning == "SL":
+                makedir(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER)
+                plt.savefig(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER + "/" +
+                            operation_name.replace(" ", "_") + const.ROC_CURVE_TAG + const.JPG, dpi=300)
+            else:
+                # plot roc curve for k-means clustering
+                makedir(const.PLOT_FOLDER + "/" + const.CLUSTERING_PLOT_FOLDER)
+                plt.savefig(const.PLOT_FOLDER + "/" + const.CLUSTERING_PLOT_FOLDER + "/" +
+                            operation_name.replace(" ", "_") + const.ROC_CURVE_TAG + const.JPG, dpi=300)
         plt.show()
 
 
@@ -207,6 +220,7 @@ def plot_comparison_of_predictions_by_genre(y_test, y_pred, genres_list, model_n
         compute_confusion_matrix = metrics.confusion_matrix(y_test, y_pred)
         bar = pd.DataFrame(compute_confusion_matrix, columns=genres_list, index=genres_list)
         ax = bar.plot(kind="bar", figsize=(16, 8), fontsize=10, width=0.8, color=const.COLORS_LIST, edgecolor="black")
+        ax.legend(loc="upper right", fontsize=8)
         plt.title("Classification Predictions By Genres - " + model_name.upper(), fontsize=18)
         plt.xlabel("Genres", fontsize=14)
         plt.xticks(rotation=0)
@@ -218,8 +232,9 @@ def plot_comparison_of_predictions_by_genre(y_test, y_pred, genres_list, model_n
                             (plot.get_x() + (plot.get_width() / 2), plot.get_height()), ha="center",
                             va="center", xytext=(0.3, 10), textcoords="offset points", fontsize=5, rotation=90)
         if store_in_folder:
-            makedir(const.PLOT_FOLDER)
-            plt.savefig(const.STORE_PATH + model_name.replace(" ", "_") + const.PREDICT_BY_GENRES_TAG + const.JPG,
+            makedir(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER)
+            plt.savefig(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER + "/" + model_name.replace(" ", "_")
+                        + const.PREDICT_BY_GENRES_TAG + const.JPG,
                         dpi=300)
         plt.show()
 
@@ -230,7 +245,7 @@ def plot_predictions_evaluation(input_data, model_name, genres_list, show_on_scr
         ax = input_data.plot(kind="bar", figsize=(16, 8), fontsize=14,
                              width=0.6, color=const.PRED_EVA_LIST, edgecolor="black")
         ax.set_xticklabels(genres_list, rotation=0)
-        ax.legend(["Real Value", "Predict Value"])
+        ax.legend(["Real Value", "Predict Value"], fontsize=9, loc="upper right")
         plt.title("Predictions Evaluation - " + model_name.upper(), fontsize=22)
         plt.xlabel("Genres", fontsize=18)
         plt.ylabel("Occurrences", fontsize=18)
@@ -239,8 +254,9 @@ def plot_predictions_evaluation(input_data, model_name, genres_list, show_on_scr
                         (p.get_x() + (p.get_width() / 2), p.get_height()), ha="center", va="center",
                         xytext=(0, 5), textcoords="offset points", fontsize=10, rotation=0)
         if store_in_folder:
-            makedir(const.PLOT_FOLDER)
-            plt.savefig(const.STORE_PATH + model_name + const.PREDICT_EV_TAG + const.JPG, dpi=300)
+            makedir(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER)
+            plt.savefig(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER + "/" + model_name +
+                        const.PREDICT_EV_TAG + const.JPG, dpi=300)
         plt.show()
 
 
@@ -265,6 +281,26 @@ def plot_classification_report(clf_report, model_name, show_on_screen=True, stor
         plt.ylabel("Classes", fontsize=18)
 
         if store_in_folder:
-            makedir(const.PLOT_FOLDER)
-            plt.savefig(const.STORE_PATH + model_name + const.CLF_REPORT_TAG + const.JPG, dpi=300)
+            makedir(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER)
+            plt.savefig(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER + "/" + model_name +
+                        const.CLF_REPORT_TAG + const.JPG, dpi=300)
         plt.show()
+
+
+def plot_boxplot(input_data):
+    plt.figure(figsize=(16, 8.2))
+    sns.boxplot(data=input_data, orient="h")
+    plt.yticks(fontsize=8)
+    plt.title("Boxplot of Standardize Features")
+    plt.show()
+
+
+def plot_silhouette(silhouette_scores):
+    plt.figure(figsize=(16, 8.2))
+    plt.plot(silhouette_scores.values())
+    plt.xticks(range(0, 23, 1), silhouette_scores.keys())
+    plt.title("Silhouette Metric", fontsize=18)
+    plt.xlabel("k", fontsize=16)
+    plt.ylabel("Silhouette", fontsize=16)
+    plt.axvline(1, color="red")
+    plt.show()

@@ -148,7 +148,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                 y_train=y_train,
                                                 X_test=X_test,
                                                 y_test=y_test,
-                                                show_on_screen=True,
+                                                show_on_screen=False,
                                                 store_in_folder=True)
 
         if model_name == "SVM":
@@ -164,7 +164,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                    operation_name=model_name,
                                    genres_list=const.GENRES_LIST,
                                    type_of_learning="SL",
-                                   show_on_screen=True,
+                                   show_on_screen=False,
                                    store_in_folder=True)
 
         if show_compare_prediction_by_genre:
@@ -190,7 +190,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
         # plot classification report
         plot_function.plot_classification_report(clf_report=clf_report,
                                                  model_name=model_name,
-                                                 show_on_screen=True,
+                                                 show_on_screen=False,
                                                  store_in_folder=True)
 
 
@@ -204,7 +204,7 @@ def classification_and_evaluation(data_path, normalization_type):
     # Plot correlation matrix
     if not os.path.exists(const.STORE_PATH + const.CORR_MATR_TAG + const.JPG):
         plot_function.plot_correlation_matrix(input_data=X,
-                                              show_on_screen=True,
+                                              show_on_screen=False,
                                               store_in_folder=True)
 
     # create train/test split
@@ -231,5 +231,5 @@ def classification_and_evaluation(data_path, normalization_type):
                      show_simple_compare=True)
 
 
-# if __name__ == '__main__':
-#     classification_and_evaluation(data_path=const.DATA_PATH, normalization_type=const.MIN_MAX_NORM)
+if __name__ == '__main__':
+    classification_and_evaluation(data_path=const.DATA_PATH, normalization_type=const.MIN_MAX)
