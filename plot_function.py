@@ -31,11 +31,11 @@ def plot_correlation_matrix(input_data, show_on_screen=True, store_in_folder=Tru
 
     if show_on_screen:
         plt.figure(figsize=(16, 8.5))
-        sns.set(font_scale=0.5)
+        sns.set(font_scale=0.45)
         sns.heatmap(correlation_matrix,
                     cmap="coolwarm",
                     annot=True,
-                    fmt=".1g",
+                    fmt=".2g",
                     annot_kws={"size": 5},
                     xticklabels=input_data.keys(),
                     yticklabels=input_data.keys())
@@ -43,7 +43,7 @@ def plot_correlation_matrix(input_data, show_on_screen=True, store_in_folder=Tru
 
         if store_in_folder:
             makedir(const.PLOT_FOLDER)
-            plt.savefig(const.STORE_PATH + const.CORR_MATR_TAG + const.JPG, dpi=300)
+            plt.savefig(const.PLOT_FOLDER + "/" + const.CORR_MATR_TAG + const.JPG, dpi=300)
         plt.show()
 
 

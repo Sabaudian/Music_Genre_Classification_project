@@ -152,9 +152,6 @@ def clustering_and_evaluation(data_path, normalization_type):
     print("\nX (extracted features):\n\033[92m{}\033[0m".format(X))
     print("\ny (genre label):\n\033[92m{}\033[0m".format(y))
 
-    # Plot the boxplot of the standardized features
-    plot_function.plot_boxplot(X)
-
     # Plot correlation matrix
     if not os.path.exists(const.PLOT_FOLDER + "/" + const.CORR_MATR_TAG + const.JPG):
         plot_function.plot_correlation_matrix(input_data=X,
