@@ -231,5 +231,6 @@ def classification_and_evaluation(data_path, normalization_type):
                      show_simple_compare=False)
 
 
-if __name__ == '__main__':
-    classification_and_evaluation(data_path=const.DATA_PATH, normalization_type=const.MIN_MAX)
+# # used for testing
+# if __name__ == '__main__':
+#     classification_and_evaluation(data_path=const.DATA_PATH, normalization_type=const.MIN_MAX)

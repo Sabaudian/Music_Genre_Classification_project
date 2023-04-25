@@ -166,6 +166,7 @@ def clustering_and_evaluation(data_path, normalization_type):
                        show_roc_curve=True)
 
 
-if __name__ == '__main__':
-    # clustering
-    clustering_and_evaluation(data_path=const.DATA_PATH, normalization_type=const.MIN_MAX)
+# # used for testing
+# if __name__ == '__main__':
+#     # clustering
+#     clustering_and_evaluation(data_path=const.DATA_PATH, normalization_type=const.MIN_MAX)
