@@ -29,7 +29,7 @@ Then we have the core classes of the project:
 - **_costants:_** class that contain all the constats used in the project.
 
 ## Documentation
-...work in progress...
+...*work in progress*...
 
 
 
