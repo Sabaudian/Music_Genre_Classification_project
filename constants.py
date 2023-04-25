@@ -23,7 +23,7 @@ HOP_LENGHT = 512
 # FOR VARIOUS COMPUTATION
 STD = "std"
 MIN_MAX = "min_max"
-VARIANCE_RATIO = 0.80
+VARIANCE_RATIO = 0.95
 
 # FOR PLOT AND SIMILAR
 PLOT_FOLDER = "plot"
@@ -45,7 +45,6 @@ FEATURES_VISUALIZATION_PATH = {"blues": "genres_original/blues/blues.00000.wav",
                                "rock": "genres_original/rock/rock.00000.wav"}
 
 # FOR NAMING FILE AND SIMILAR
-STORE_PATH = "plot/"
 JPG = ".jpg"
 CORR_MATR_TAG = "correlation_matrix_plot"
 OPT_N_COMP_TAG = "pca_opt_num_of_components_plot"
@@ -53,7 +52,7 @@ PCA_TAG = "pca_scatter_plot"
 K_MEAN_PCA_CC_TAG = "pca_k-means_cluster_centroids_plot"
 K_MEAN_CONF_MATR_TAG = "k-means_confusion_matrix_plot"
 CONF_MATR_TAG = "_confusion_matrix_plot"
-ROC_CURVE_TAG = "_roc_plot"
+ROC_CURVE_TAG = "_roc_curve_plot"
 PREDICT_BY_GENRES_TAG = "_compare_predictions_by_genres_plot"
 PREDICT_EV_TAG = "_predictions_evaluation_plot"
 CLF_REPORT_TAG = "_clf_report"

@@ -3,7 +3,6 @@ import os.path
 import numpy as np
 import pandas as pd
 
-from sklearn import metrics
 from sklearn import preprocessing
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
@@ -67,7 +66,7 @@ def number_of_components(input_data, variance_ratio, show_on_screen=True, store_
 
 
 def get_kmeans_model(input_data):
-    # Kmeans model
+    # K-means model
     kmeans_model = KMeans(n_clusters=10, init="k-means++", n_init="auto").fit(input_data)
     # labels
     kmeans_labels = kmeans_model.labels_
@@ -75,25 +74,6 @@ def get_kmeans_model(input_data):
     kmeans_centers = kmeans_model.cluster_centers_
 
     return kmeans_model, kmeans_labels, kmeans_centers
-
-
-def silhouette_index_computation(input_data):
-    k_to_test = range(2, 25, 1)
-    silhouette_scores = {}
-
-    for k in k_to_test:
-        # compute kmeans with k
-        kmeans_model_k = KMeans(n_clusters=k, init="k-means++", n_init="auto").fit(input_data)
-        # compute k_th label
-        kmeans_label_k = kmeans_model_k.labels_
-        # compute the k_th score
-        score_k = metrics.silhouette_score(input_data, kmeans_label_k)
-        # silhouette values
-        silhouette_scores[k] = score_k
-        print(
-            "Tested k-means with k = \033[92m{:d}\033[0m\tSilhouette Score: \033[92m{:5.4f}\033[0m".format(k, score_k))
-
-    plot_function.plot_silhouette(silhouette_scores)
 
 
 def get_pca_centroids(input_data, input_columns, n_components, centroids):
@@ -107,6 +87,7 @@ def get_pca_centroids(input_data, input_columns, n_components, centroids):
     principal_components = pca_fit.transform(input_data)
 
     df = pd.DataFrame(data=principal_components, columns=column_components)
+
     print("\nPCA Variance Ratio For \033[92m{}\033[0m "
           "Components: \033[92m{:.4f}\033[0m\n".format(n_components, pca.explained_variance_ratio_.sum()))
 
@@ -136,6 +117,7 @@ def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_
                                        input_columns=input_columns,
                                        n_components=num_components,
                                        centroids=centers)
+
     if show_cluster:
         # Plot clusters
         plot_function.plot_clusters(input_pca_data=pca[["PC1", "PC2", "genre"]],
@@ -174,20 +156,17 @@ def clustering_and_evaluation(data_path, normalization_type):
     plot_function.plot_boxplot(X)
 
     # Plot correlation matrix
-    if not os.path.exists(const.STORE_PATH + const.CORR_MATR_TAG + const.JPG):
+    if not os.path.exists(const.PLOT_FOLDER + "/" + const.CORR_MATR_TAG + const.JPG):
         plot_function.plot_correlation_matrix(input_data=X,
-                                              show_on_screen=False,
-                                              store_in_folder=False)
+                                              show_on_screen=True,
+                                              store_in_folder=True)
     # k-means model and evaluation
     k_means_clustering(input_data=X,
                        input_columns=y,
                        dataframe=df,
                        show_cluster=True,
-                       show_confusion_matrix=False,
-                       show_roc_curve=False)
-
-    # silhouette score testing
-    silhouette_index_computation(input_data=X)
+                       show_confusion_matrix=True,
+                       show_roc_curve=True)
 
 
 if __name__ == '__main__':

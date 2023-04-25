@@ -270,37 +270,19 @@ def plot_classification_report(clf_report, model_name, show_on_screen=True, stor
                          cmap="RdBu",
                          annot=True,
                          fmt="g",
-                         annot_kws={"size": 10},
+                         annot_kws={"size": 12},
                          linewidths=1,
                          linecolor="black",
                          cbar=True,
                          clip_on=False)
-        ax.tick_params(labelsize=10)
+        ax.tick_params(labelsize=15)
+        ax.xaxis.set_ticks_position("top")
         plt.title("{} Classification report".format(model_name), fontsize=22)
         plt.xlabel("Metrics", fontsize=18)
-        plt.ylabel("Classes", fontsize=18)
+        plt.ylabel("Genres", fontsize=18)
 
         if store_in_folder:
             makedir(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER)
             plt.savefig(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER + "/" + model_name +
                         const.CLF_REPORT_TAG + const.JPG, dpi=300)
         plt.show()
-
-
-def plot_boxplot(input_data):
-    plt.figure(figsize=(16, 8.2))
-    sns.boxplot(data=input_data, orient="h")
-    plt.yticks(fontsize=8)
-    plt.title("Boxplot of Standardize Features")
-    plt.show()
-
-
-def plot_silhouette(silhouette_scores):
-    plt.figure(figsize=(16, 8.2))
-    plt.plot(silhouette_scores.values())
-    plt.xticks(range(0, 23, 1), silhouette_scores.keys())
-    plt.title("Silhouette Metric", fontsize=18)
-    plt.xlabel("k", fontsize=16)
-    plt.ylabel("Silhouette", fontsize=16)
-    plt.axvline(1, color="red")
-    plt.show()
