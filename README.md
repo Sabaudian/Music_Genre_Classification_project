@@ -18,7 +18,7 @@ In the **utils** directory there are all that classes used for preprocessing the
 - **_features_computation.py:_** computation of the various features to extract from audio files.
 - _**features_extractions:**_ extraction of the computed features to a csv file in a proper directory.
 - _**features_visualizations:**_ visualization of the single audio signals and the visualization of the various extracted features with a confrontation of the different genres.
-- _**prepare_datasets:**_ check the duration of audio files and performe data augmentation (30s long file -> ten 3s long chunck).
+- _**prepare_dataset:**_ check the duration of audio files and performe data augmentation (30s long file -> ten 3s long chunck).
 
 Then we have the core classes of the project:
 
