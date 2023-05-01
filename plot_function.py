@@ -48,7 +48,9 @@ def plot_correlation_matrix(input_data, show_on_screen=True, store_in_folder=Tru
 
 
 def plot_pca_opt_num_of_components(input_data, cumulative_evr, show_on_screen=True, store_in_folder=True):
+
     if show_on_screen:
+
         plt.figure(figsize=(16, 8))
         plt.plot(range(1, len(input_data.columns) + 1), cumulative_evr, marker="o", linestyle="--")
         plt.axhline(y=const.VARIANCE_RATIO, color="red", linestyle="-")
@@ -79,19 +81,22 @@ def plot_clusters(input_pca_data, centroids, labels, colors_list, genres_list, s
 
     if show_on_screen:
 
+        plt.style.use("ggplot")  # style
         fig, ax = plt.subplots(figsize=(16, 8))
 
         for genre, group in groups:
-            plt.scatter(group.pca_1, group.pca_2, label=genres[genre], color=colors[genre], edgecolors="white",
-                        alpha=0.5)
+            plt.scatter(x=group.pca_1, y=group.pca_2, label=genres[genre], color=colors[genre], edgecolors="white",
+                        alpha=0.6)
             ax.tick_params(axis="x", which="both", bottom="off", top="off", labelbottom="off")
             ax.tick_params(axis="y", which="both", left="off", top="off", labelleft="off")
-            ax.set_facecolor("gainsboro")
 
-        plt.plot(centroids[:, 0], centroids[:, 1], "x", markersize=10, markeredgewidth=2, markeredgecolor="black")
+        plt.plot(centroids[:, 0], centroids[:, 1], "*", label="Centroids", c="white", markersize=15, markeredgewidth=1,
+                 markeredgecolor="black")
 
         ax.legend(title="Genres:", fontsize=10)
-        ax.set_title("Music Genres Clusters", fontsize=22)
+        ax.set_title("PCA K-Means Clustering", fontsize=22)
+        plt.xlabel("PC1", fontsize=16)
+        plt.ylabel("PC2", fontsize=16)
 
         if store_in_folder:
             makedir(const.PLOT_FOLDER + "/" + const.CLUSTERING_PLOT_FOLDER)
@@ -113,8 +118,8 @@ def plot_kmeans_confusion_matrix(data, labels, genre_list, show_on_screen=True, 
                          fmt="g",
                          annot_kws={"size": 10},
                          square=True,
-                         xticklabels=const.GENRES_LIST,
-                         yticklabels=const.GENRES_LIST)
+                         xticklabels=genre_list,
+                         yticklabels=genre_list)
         ax.tick_params(labelsize=10)
         plt.xlabel("Predicted Labels", fontsize=16)
         plt.ylabel("True Labels", fontsize=16)

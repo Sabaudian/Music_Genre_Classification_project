@@ -10,7 +10,7 @@ import constants as const
 # main class calling methods for feature extraction, clustering and classification
 if __name__ == '__main__':
 
-    # pre-processing data
+    # Pre-processing data
     check_preprocessing_data = input("> START PRE-PROCESSING DATA? [Y/N]: ")
     if check_preprocessing_data.upper() == "Y":
 
@@ -27,9 +27,10 @@ if __name__ == '__main__':
                                           chunk_length=const.CHUNK_LENGTH,
                                           new_dir_path=const.GENRES_3S_PATH)
 
-    # extract and visualize features from samples
+    # Extract and visualize features from samples
     check_feature_extraction = input("\n> EXTRACT FEATURES FROM DATA? [Y/N]: ")
     if check_feature_extraction.upper() == "Y":
+
         feature.features_extraction_to_csv(dataset_path=const.GENRES_3S_PATH,
                                            data_folder=const.DATA_FOLDER,
                                            data_path=const.DATA_PATH)
@@ -38,13 +39,11 @@ if __name__ == '__main__':
         if check_features_visualization.upper() == "Y":
             visualize.visualize_features()
 
-    # k-means clustering and evaluation
+    # K-Means clustering and evaluation
     check_k_mean_cluster = input("\n> PERFORM K-MEANS ALGORITHM? [Y/N]: ")
     if check_k_mean_cluster.upper() == "Y":
-        genres_ul_functions.clustering_and_evaluation(data_path=const.DATA_PATH,
-                                                      normalization_type=const.MIN_MAX)
-    # classification models and evaluation
+        genres_ul_functions.clustering_and_evaluation(data_path=const.DATA_PATH)
+    # Classification models and evaluation
     check_classification_models = input("\n> PERFORM CLASSIFICATION? [Y/N]: ")
     if check_classification_models.upper() == "Y":
-        genres_sl_functions.classification_and_evaluation(data_path=const.DATA_PATH,
-                                                          normalization_type=const.MIN_MAX)
+        genres_sl_functions.classification_and_evaluation(data_path=const.DATA_PATH)

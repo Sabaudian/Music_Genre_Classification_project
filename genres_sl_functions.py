@@ -21,7 +21,7 @@ def makedir(dir_path):
         os.makedirs(dir_path)
 
 
-def load_data(data_path, type_of_normalization):
+def load_data(data_path):
     # read file and drop unnecessary column
     raw_dataset = pd.read_csv(data_path)
     print("\nRaw Dataset Keys:\n\033[92m{}\033[0m".format(raw_dataset.keys()))
@@ -39,14 +39,8 @@ def load_data(data_path, type_of_normalization):
     y = df.loc[:, label_column]
 
     X_columns = X.columns
-    if type_of_normalization == "std":
-        resized_data = preprocessing.StandardScaler()
-        np_scaled = resized_data.fit_transform(X)
-    elif type_of_normalization == "min_max":
-        resized_data = preprocessing.MinMaxScaler()
-        np_scaled = resized_data.fit_transform(X)
-    else:
-        np_scaled = X
+    resized_data = preprocessing.MinMaxScaler()
+    np_scaled = resized_data.fit_transform(X)
 
     X = pd.DataFrame(np_scaled, columns=X_columns)
 
@@ -194,18 +188,17 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                  store_in_folder=True)
 
 
-def classification_and_evaluation(data_path, normalization_type):
+def classification_and_evaluation(data_path):
     # load data
-    X, y, df = load_data(data_path=data_path, type_of_normalization=normalization_type)
+    X, y, df = load_data(data_path=data_path)
     print("\nData:\n\033[92m{}\033[0m".format(df))
     print("\nX (my data):\n\033[92m{}\033[0m".format(X))
     print("\ny (labels):\n\033[92m{}\033[0m".format(y))
 
     # Plot correlation matrix
-    if not os.path.exists(const.PLOT_FOLDER + "/" + const.CORR_MATR_TAG + const.JPG):
-        plot_function.plot_correlation_matrix(input_data=X,
-                                              show_on_screen=True,
-                                              store_in_folder=True)
+    plot_function.plot_correlation_matrix(input_data=X,
+                                          show_on_screen=False,
+                                          store_in_folder=False)
 
     # create train/test split
     X_train, X_test, y_train, y_test = prepare_datasets(X=X, y=y, test_size=0.3)
@@ -225,12 +218,12 @@ def classification_and_evaluation(data_path, normalization_type):
                      y_train=y_train,
                      X_test=X_test,
                      y_test=y_test,
-                     show_confusion_matrix=False,
-                     show_roc_curve=False,
-                     show_compare_prediction_by_genre=False,
-                     show_simple_compare=False)
+                     show_confusion_matrix=True,
+                     show_roc_curve=True,
+                     show_compare_prediction_by_genre=True,
+                     show_simple_compare=True)
 
 
 # # used for testing
 # if __name__ == '__main__':
-#     classification_and_evaluation(data_path=const.DATA_PATH, normalization_type=const.MIN_MAX)
+#     classification_and_evaluation(data_path=const.DATA_PATH)
