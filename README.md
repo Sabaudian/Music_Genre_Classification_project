@@ -2,6 +2,12 @@
 
 This repository is based on the recognition of musical genres through supervised and unsupervised learning.
 
+<img 
+  width="1843" 
+  alt="apr_project_architecture" 
+  src="https://user-images.githubusercontent.com/32509505/236864331-c288575f-e6cc-4bfb-b419-0d60ba82cb0e.png"
+  title="High level architecture of the project">
+
 ## Plugins:
 - numpy: https://numpy.org
 - librosa: https://librosa.org/doc/latest/index.html
