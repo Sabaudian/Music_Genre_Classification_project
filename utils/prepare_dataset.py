@@ -10,6 +10,33 @@ def makedir(dir_path):
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
         print("\n Folder " + dir_path + "has been crated successfully!")
+        
+        
+def check_file_extension(dataset_path, file_extension):
+
+    print("\n Checking audio file extension...")
+
+    # loop through all genre sub-folder
+    for i, (dirpath, dirname, filenames) in enumerate(os.walk(dataset_path)):
+
+        # loop through audio file
+        for f in sorted(filenames):
+
+            # to ignore a hidden file in my folder
+            if not f.startswith("."):
+
+                # pick file extension
+                current_extension = f.split(".")[-1]  # -> wav
+                # file path
+                file_path = os.path.join(dirpath, f)
+                sound = AudioSegment.from_file(file_path)
+
+                # check extension
+                if current_extension != file_extension:
+                    print("File {} is not .{}".format(f, file_extension))
+                    sound.export(file_path, format=file_extension)
+
+    print("\n ...all audio file has been checked!")
 
 
 def check_sound_duration(dataset_path, milliseconds_duration):
