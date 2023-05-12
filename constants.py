@@ -13,6 +13,7 @@ GENRES = "blues classical country disco hiphop jazz metal pop reggae rock"
 SAMPLE_RATE = 22050
 TRACK_DURATION = 30  # measured in seconds
 DURATION = 3  # duration of audio after pre-processing in seconds
+WAV = "wav"  # file extension
 
 # USED FOR FEATURES EXTRACTION
 NUM_MFCC = 20
