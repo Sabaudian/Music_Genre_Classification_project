@@ -55,7 +55,7 @@ def check_sound_duration(dataset_path, milliseconds_duration):
                 # pick file extension
                 extension = f.split(".")[-1]
 
-                # control the duration -> at lest milliseconds_duration (30000 ms)
+                # control the duration -> at least milliseconds_duration (30000 ms)
                 file_path = os.path.join(dirpath, f)
                 sound = AudioSegment.from_file(file_path, format=extension)
                 duration_in_milliseconds = len(sound)
