@@ -61,7 +61,7 @@ def get_classification_model():
     models = {"NN": [], "RF": [], "KNN": [], "SVM": []}
 
     # Neural Network
-    nn_model = MLPClassifier(solver="adam", alpha=1e-5, hidden_layer_sizes=(128, 64, 64, 32), random_state=10,
+    nn_model = MLPClassifier(solver="adam", alpha=1e-5, hidden_layer_sizes=(256, 128, 128, 64, 64, 32), random_state=10,
                              activation="relu", learning_rate="adaptive", early_stopping=False, verbose=False,
                              learning_rate_init=0.001, max_iter=500)
     models.update({"NN": nn_model})
@@ -71,7 +71,7 @@ def get_classification_model():
     models.update({"RF": rf_model})
 
     # k-Nearest Neighbors
-    knn_model = KNeighborsClassifier(n_neighbors=19)
+    knn_model = KNeighborsClassifier(n_neighbors=5, weights="distance", metric="euclidean")
     models.update({"KNN": knn_model})
 
     # Support Vector Machine
@@ -215,7 +215,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
         # plot classification report
         plot_function.plot_classification_report(clf_report=clf_report,
                                                  model_name=model_name,
-                                                 show_on_screen=True,
+                                                 show_on_screen=False,
                                                  store_in_folder=False)
         # Compute execution time of each classifier
         execution_time = time.time() - start_execution_time
@@ -241,7 +241,7 @@ def classification_and_evaluation(data_path):
 
     # Plot correlation matrix
     plot_function.plot_correlation_matrix(input_data=X,
-                                          show_on_screen=True,
+                                          show_on_screen=False,
                                           store_in_folder=False)
 
     # create train/test split
@@ -263,12 +263,12 @@ def classification_and_evaluation(data_path):
                      y_train=y_train,
                      X_test=X_test,
                      y_test=y_test,
-                     show_confusion_matrix=True,
-                     show_roc_curve=True,
-                     show_compare_prediction_by_genre=True,
-                     show_simple_compare=True)
+                     show_confusion_matrix=False,
+                     show_roc_curve=False,
+                     show_compare_prediction_by_genre=False,
+                     show_simple_compare=False)
 
 
-# # used for testing
-# if __name__ == '__main__':
-#     classification_and_evaluation(data_path=const.DATA_PATH)
+# used for testing
+if __name__ == '__main__':
+    classification_and_evaluation(data_path=const.DATA_PATH)

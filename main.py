@@ -49,6 +49,7 @@ if __name__ == '__main__':
     check_k_mean_cluster = input("\n> PERFORM K-MEANS ALGORITHM? [Y/N]: ")
     if check_k_mean_cluster.upper() == "Y":
         genres_ul_functions.clustering_and_evaluation(data_path=const.DATA_PATH)
+
     # Classification models and evaluation
     check_classification_models = input("\n> PERFORM CLASSIFICATION? [Y/N]: ")
     if check_classification_models.upper() == "Y":
