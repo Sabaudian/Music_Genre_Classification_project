@@ -26,7 +26,6 @@ if __name__ == '__main__':
             prepare.check_sound_duration(dataset_path=const.DATASET_PATH,
                                          milliseconds_duration=const.DURATION_MS)
 
-
         # make chunk from og. sound file
         check_if_chunks_exist = input("\n>>> PERMORFORMING DATA AUGMENTATION? [Y/N]: ")
         if check_if_chunks_exist.upper() == "Y":

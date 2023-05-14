@@ -65,7 +65,7 @@ def number_of_components(input_data, variance_ratio, show_on_screen=True, store_
 
 def get_kmeans_model(input_data):
     # K-means model
-    kmeans_model = KMeans(n_clusters=10, init="k-means++", n_init="auto").fit(input_data)
+    kmeans_model = KMeans(n_clusters=10, init="k-means++", n_init="auto", random_state=42).fit(input_data)
     # labels
     kmeans_labels = kmeans_model.labels_
     # centers
@@ -158,7 +158,7 @@ def clustering_and_evaluation(data_path):
                        show_roc_curve=True)
 
 
-# used for testing
-if __name__ == '__main__':
-    # clustering
-    clustering_and_evaluation(data_path=const.DATA_PATH)
+# # used for testing
+# if __name__ == '__main__':
+#     # clustering
+#     clustering_and_evaluation(data_path=const.DATA_PATH)

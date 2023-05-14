@@ -10,10 +10,9 @@ def makedir(dir_path):
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
         print("\n Folder " + dir_path + "has been crated successfully!")
-        
-        
-def check_file_extension(dataset_path, file_extension):
 
+
+def check_file_extension(dataset_path, file_extension):
     print("\n Checking audio file extension...")
 
     # loop through all genre sub-folder
@@ -40,7 +39,6 @@ def check_file_extension(dataset_path, file_extension):
 
 
 def check_sound_duration(dataset_path, milliseconds_duration):
-
     print("\n Checking audio file duration...")
 
     # loop through all genre sub-folder
@@ -62,9 +60,9 @@ def check_sound_duration(dataset_path, milliseconds_duration):
 
                 # if it is less than my threshold add silence
                 if duration_in_milliseconds < milliseconds_duration:
-
                     # pick file with duration less milliseconds_duration
-                    print("\n- File: \033[92m{}\033[0m, Duration: \033[92m{}\033[0m".format(f, duration_in_milliseconds))
+                    print(
+                        "\n- File: \033[92m{}\033[0m, Duration: \033[92m{}\033[0m".format(f, duration_in_milliseconds))
                     # compute duration difference between my threshold and sound duration
                     duration_difference = milliseconds_duration - len(sound)
                     # append silence to reach the minimum quota
@@ -78,7 +76,6 @@ def check_sound_duration(dataset_path, milliseconds_duration):
 
 # divides each audio file into 3-second long files
 def make_chunks_from_data(dataset_path, chunk_length, new_dir_path):
-
     if not os.path.isdir(new_dir_path):
         # make new directory for pre-processed data
         makedir(new_dir_path)

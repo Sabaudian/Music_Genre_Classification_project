@@ -22,7 +22,6 @@ FRAME_SIZE = 1024
 HOP_LENGHT = 512
 
 # FOR VARIOUS COMPUTATION
-STD = "std"
 MIN_MAX = "min_max"
 VARIANCE_RATIO = 0.80
 
@@ -56,4 +55,4 @@ CONF_MATR_TAG = "_confusion_matrix_plot"
 ROC_CURVE_TAG = "_roc_curve_plot"
 PREDICT_BY_GENRES_TAG = "_compare_predictions_by_genres_plot"
 PREDICT_EV_TAG = "_predictions_evaluation_plot"
-CLF_REPORT_TAG = "_clf_report"
+

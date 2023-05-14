@@ -1,7 +1,9 @@
 import os
+import time
 import numpy as np
 import pandas as pd
 
+from sklearn import metrics
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
@@ -9,6 +11,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
+
 
 # my import functions
 import constants as const
@@ -58,21 +61,21 @@ def get_classification_model():
     models = {"NN": [], "RF": [], "KNN": [], "SVM": []}
 
     # Neural Network
-    nn_model = MLPClassifier(solver="adam", alpha=1e-5, hidden_layer_sizes=(16, 16), random_state=1,
+    nn_model = MLPClassifier(solver="adam", alpha=1e-5, hidden_layer_sizes=(128, 64, 64, 32), random_state=10,
                              activation="relu", learning_rate="adaptive", early_stopping=False, verbose=False,
-                             max_iter=1000)
+                             learning_rate_init=0.001, max_iter=500)
     models.update({"NN": nn_model})
 
     # Random forest
-    rf_model = RandomForestClassifier(n_estimators=1000, max_depth=10, random_state=10)
+    rf_model = RandomForestClassifier(n_estimators=1000, max_depth=10, random_state=15)
     models.update({"RF": rf_model})
 
     # k-Nearest Neighbors
-    knn_model = KNeighborsClassifier(weights="distance")
+    knn_model = KNeighborsClassifier(n_neighbors=19)
     models.update({"KNN": knn_model})
 
     # Support Vector Machine
-    svc_model = SVC(C=10, kernel="rbf", probability=True, random_state=10)
+    svc_model = SVC(C=150, kernel="rbf", probability=True, random_state=10)
     models.update({"SVM": svc_model})
 
     return models
@@ -82,7 +85,7 @@ def compute_evaluation_metrics(model, model_name, X_test, y_test):
     # Predict the target vector
     y_predict = model.predict(X_test)
 
-    # compute report
+    # compute detailed report
     clf_report = classification_report(y_test, y_predict, target_names=const.GENRES_LIST, digits=2, output_dict=True)
     # update so in df is shown in the same way as standard print
     clf_report.update({"accuracy": {"precision": None, "recall": None, "f1-score": clf_report["accuracy"],
@@ -96,6 +99,27 @@ def compute_evaluation_metrics(model, model_name, X_test, y_test):
     return df
 
 
+# Compute a simplify version of classifier metrics report
+def compute_review_metrics(model, X_test, y_test, execution_time):
+    # Predict the target vector
+    y_predict = model.predict(X_test)
+    # my dictionary
+    dictionary = {}
+
+    # metrics computation
+    clf_accuracy = metrics.accuracy_score(y_test, y_predict) * 100
+    clf_rmse = metrics.mean_squared_error(y_test, y_predict, squared=False)
+    clf_f1_score = metrics.f1_score(y_test, y_predict, average="weighted")
+
+    # insert value into dictionary
+    dictionary["ACCURACY"] = clf_accuracy
+    dictionary["RMSE"] = clf_rmse
+    dictionary["F1_SCORE"] = clf_f1_score
+    dictionary["EXECUTION_TIME"] = execution_time
+
+    return dictionary
+
+
 def prediction_comparison(model, X_test, y_test):
     # Predict the target vector
     y_predict = model.predict(X_test)
@@ -103,7 +127,7 @@ def prediction_comparison(model, X_test, y_test):
     genres = {i: const.GENRES_LIST[i] for i in range(0, len(const.GENRES_LIST))}
 
     clf_data = pd.DataFrame(columns=["real_genre_num", "predict_genre_num",
-                                     "real_genre_text", "predict_genre_text"])
+                                     "real_genre_label", "predict_genre_label"])
     clf_data["real_genre_num"] = y_test.astype(int)
     clf_data["predict_genre_num"] = y_predict.astype(int)
 
@@ -111,14 +135,14 @@ def prediction_comparison(model, X_test, y_test):
     comparison_column = np.where(clf_data["real_genre_num"] == clf_data["predict_genre_num"], True, False)
     clf_data["check"] = comparison_column
 
-    clf_data["real_genre_text"] = clf_data["real_genre_num"].replace(genres)
-    clf_data["predict_genre_text"] = clf_data["predict_genre_num"].replace(genres)
+    clf_data["real_genre_label"] = clf_data["real_genre_num"].replace(genres)
+    clf_data["predict_genre_label"] = clf_data["predict_genre_num"].replace(genres)
 
     input_data = pd.DataFrame()
     input_data[["Genre", "Real_Value"]] = \
-        clf_data[["real_genre_text", "predict_genre_text"]].groupby(["real_genre_text"], as_index=False).count()
+        clf_data[["real_genre_label", "predict_genre_label"]].groupby(["real_genre_label"], as_index=False).count()
     input_data[["Genre", "Predict_Value"]] = \
-        clf_data[["real_genre_text", "predict_genre_text"]].groupby(["predict_genre_text"], as_index=False).count()
+        clf_data[["real_genre_label", "predict_genre_label"]].groupby(["predict_genre_label"], as_index=False).count()
 
     return input_data
 
@@ -126,13 +150,19 @@ def prediction_comparison(model, X_test, y_test):
 def model_evaluation(models, X_train, y_train, X_test, y_test,
                      show_confusion_matrix=True, show_roc_curve=True,
                      show_compare_prediction_by_genre=True, show_simple_compare=True):
-    # evaluation of every classification model
+    # dictionary for gathering the summary of metrics computations on classifiers
+    merge_clf_summary_results = {}
+
+    # evaluation of each classifier
     for key, value in models.items():
 
         # NN, KNN, RF and SVM
         model_name = key
         # computed model
         model_type = value
+
+        # For computation of execution time of classifiers
+        start_execution_time = time.time()
 
         if show_confusion_matrix:
             # plotting confusion matrix
@@ -143,11 +173,11 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                 X_test=X_test,
                                                 y_test=y_test,
                                                 show_on_screen=True,
-                                                store_in_folder=True)
+                                                store_in_folder=False)
 
         if model_name == "SVM":
             y_score = model_type.fit(X_train, y_train).decision_function(X_test)
-        else:
+        else:  # if model_name == "NN, KNN, RF, SVM"
             model_type.fit(X_train, y_train)
             y_score = model_type.predict_proba(X_test)
 
@@ -159,7 +189,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                    genres_list=const.GENRES_LIST,
                                    type_of_learning="SL",
                                    show_on_screen=True,
-                                   store_in_folder=True)
+                                   store_in_folder=False)
 
         if show_compare_prediction_by_genre:
             # Predict the target vector
@@ -170,7 +200,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                                   genres_list=const.GENRES_LIST,
                                                                   model_name=model_name,
                                                                   show_on_screen=True,
-                                                                  store_in_folder=True)
+                                                                  store_in_folder=False)
         if show_simple_compare:
             input_data = prediction_comparison(model=model_type, X_test=X_test, y_test=y_test)
             # evaluation actual/prediction
@@ -178,14 +208,28 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                       model_name=model_name,
                                                       genres_list=const.GENRES_LIST,
                                                       show_on_screen=True,
-                                                      store_in_folder=True)
-        # metrics computation
+                                                      store_in_folder=False)
+
+        # evaluation metrics computation
         clf_report = compute_evaluation_metrics(model=model_type, model_name=model_name, X_test=X_test, y_test=y_test)
         # plot classification report
         plot_function.plot_classification_report(clf_report=clf_report,
                                                  model_name=model_name,
                                                  show_on_screen=True,
-                                                 store_in_folder=True)
+                                                 store_in_folder=False)
+        # Compute execution time of each classifier
+        execution_time = time.time() - start_execution_time
+        # single summary of metrics per classifier
+        single_clf_metrics = compute_review_metrics(model=model_type, X_test=X_test, y_test=y_test,
+                                                    execution_time=execution_time)
+        # merge results together and add columns with classifier name
+        merge_clf_summary_results[model_name] = single_clf_metrics
+    # resulted dataframe with summary metrics per classifier
+    clf_summary_report = pd.DataFrame(merge_clf_summary_results)
+    # save report into file
+    makedir(const.DATA_FOLDER + "/" + const.CLF_REPORT_PATH)
+    clf_summary_report.to_csv(const.DATA_FOLDER + "/" + const.CLF_REPORT_PATH + "/CLFs_summary_report.csv",
+                              index=True, float_format="%.2f")
 
 
 def classification_and_evaluation(data_path):
@@ -197,11 +241,11 @@ def classification_and_evaluation(data_path):
 
     # Plot correlation matrix
     plot_function.plot_correlation_matrix(input_data=X,
-                                          show_on_screen=False,
+                                          show_on_screen=True,
                                           store_in_folder=False)
 
     # create train/test split
-    X_train, X_test, y_train, y_test = prepare_datasets(X=X, y=y, test_size=0.3)
+    X_train, X_test, y_train, y_test = prepare_datasets(X=X, y=y, test_size=0.30)
     print("\nSplit data into Train and Test:")
     print("- Train set has \033[92m{}\033[0m"
           " records out of \033[92m{}\033[0m"
@@ -213,6 +257,7 @@ def classification_and_evaluation(data_path):
 
     # models and classification
     clf_models = get_classification_model()
+    # evaluation
     model_evaluation(models=clf_models,
                      X_train=X_train,
                      y_train=y_train,
