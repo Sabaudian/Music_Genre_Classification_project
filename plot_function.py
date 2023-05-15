@@ -301,3 +301,56 @@ def plot_classification_report(clf_report, model_name, show_on_screen=True, stor
             plt.savefig(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER + "/" + model_name +
                         const.CLF_REPORT_TAG + const.JPG, dpi=300)
         plt.show()
+
+
+# Plot silhouette score
+def plot_silhouette(silhouette_score_values, number_of_clusters, min_num_k, max_num_k,
+                    show_on_screen=True, store_in_folder=True):
+    if show_on_screen:
+        # Set figure and  label
+        fig, ax1 = plt.subplots(figsize=(16, 8))
+        y_ax_ticks = np.arange(0, max(silhouette_score_values) + 1, 0.1)
+        x_ax_ticks = np.arange(min_num_k, max_num_k + 1, 1)
+
+        ax1.plot(number_of_clusters, silhouette_score_values, "k")
+        ax1.plot(number_of_clusters, silhouette_score_values, "bo")
+        ax1.set_title("Silhouette Score Values as Number of Clusters increases", fontsize=22)
+        ax1.set_yticks(y_ax_ticks, fontsize=15)
+        ax1.set_ylabel("Silhouette Score Values", fontsize=18)
+        ax1.set_xticks(x_ax_ticks, fontsize=15)
+        ax1.set_xlabel("Number Of Clusters", fontsize=18)
+
+        # compute the silhouette optimal and worst result
+        optimal_number_of_components = number_of_clusters[silhouette_score_values.index(max(silhouette_score_values))]
+        worst_number_of_components = number_of_clusters[silhouette_score_values.index(min(silhouette_score_values))]
+
+        # Plot sco
+        for y_value in silhouette_score_values:
+            x_value = silhouette_score_values.index(y_value)
+            x_offset = 1.85
+            y_offset = 0.005
+            if max(silhouette_score_values) == y_value:
+                ax1.annotate(str(round(y_value, 3)), xy=(x_value + x_offset, y_value + y_offset),
+                             color="green", weight="bold")
+            elif min(silhouette_score_values) == y_value:
+                ax1.annotate(str(round(y_value, 3)), xy=(x_value + x_offset, y_value + y_offset),
+                             color="red", weight="bold")
+            else:
+                ax1.annotate(str(round(y_value, 3)), xy=(x_value + x_offset, y_value + y_offset),
+                             color="black", weight="normal")
+
+        # add lines to indicates best and worst scenario
+        ax1.vlines(x=optimal_number_of_components, ymin=0, ymax=max(silhouette_score_values), linewidth=2,
+                   color="green",
+                   label="Max Value", linestyle="dashed")
+        ax1.vlines(x=worst_number_of_components, ymin=0, ymax=min(silhouette_score_values), linewidth=2, color="red",
+                   label="min Value", linestyle="dashed")
+
+        # Adding legend
+        ax1.legend(loc="upper right", prop={"size": 18})
+
+        if store_in_folder:
+            makedir(const.PLOT_FOLDER + "/" + const.CLUSTERING_PLOT_FOLDER)
+            plt.savefig(const.PLOT_FOLDER + "/" + const.CLUSTERING_PLOT_FOLDER + "/" + const.SILHOUETTE_TAG + const.JPG,
+                        dpi=300)
+        plt.show()

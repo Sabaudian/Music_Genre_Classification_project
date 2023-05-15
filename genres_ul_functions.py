@@ -9,6 +9,9 @@ from sklearn.decomposition import PCA
 import constants as const
 import plot_function
 
+# FOR SILHOUETTE ANALYSIS
+from sklearn.metrics import silhouette_score
+
 
 def load_data(data_path):
     # read file and drop unnecessary column
@@ -94,7 +97,32 @@ def get_pca_centroids(input_data, input_columns, n_components, centroids):
     return pca_data, pca_centroids
 
 
-def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_confusion_matrix, show_roc_curve):
+def silhouette_analysis_for_kmeans_clustering(input_data, min_num_k, max_num_k):
+    # list of silhouette values
+    silhouette_score_values = list()
+
+    # range of k
+    number_of_clusters = range(min_num_k, max_num_k + 1)
+    # Compute k-Means with different k
+    for k in number_of_clusters:
+        clusters = KMeans(n_clusters=k, n_init="auto")
+        clusters.fit(input_data)
+        cluster_labels = clusters.predict(input_data)
+        # append score values in the list
+        silhouette_score_values.append(silhouette_score(input_data, cluster_labels, metric="euclidean",
+                                                        sample_size=None,
+                                                        random_state=None))
+    # plot function
+    plot_function.plot_silhouette(silhouette_score_values=silhouette_score_values,
+                                  number_of_clusters=number_of_clusters,
+                                  min_num_k=const.MIN_NUM_CLUSTERS,
+                                  max_num_k=const.MAX_NUM_CLUSTERS,
+                                  show_on_screen=True,
+                                  store_in_folder=False)
+
+
+def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_confusion_matrix, show_roc_curve,
+                       show_silhouette):
     # Number of components
     num_components = number_of_components(input_data=input_data,
                                           variance_ratio=const.VARIANCE_RATIO,
@@ -137,6 +165,12 @@ def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_
                                show_on_screen=True,
                                store_in_folder=False)
 
+    if show_silhouette:
+        # Compute and plot silhouette analys on K-Means clustering
+        silhouette_analysis_for_kmeans_clustering(input_data=input_data,
+                                                  min_num_k=const.MIN_NUM_CLUSTERS,
+                                                  max_num_k=const.MAX_NUM_CLUSTERS)
+
 
 def clustering_and_evaluation(data_path):
     # load normalized data
@@ -154,11 +188,12 @@ def clustering_and_evaluation(data_path):
                        input_columns=y,
                        dataframe=df,
                        show_cluster=True,
-                       show_confusion_matrix=True,
-                       show_roc_curve=True)
+                       show_confusion_matrix=False,
+                       show_roc_curve=False,
+                       show_silhouette=True)
 
 
-# # used for testing
-# if __name__ == '__main__':
-#     # clustering
-#     clustering_and_evaluation(data_path=const.DATA_PATH)
+# used for testing
+if __name__ == '__main__':
+    # clustering
+    clustering_and_evaluation(data_path=const.DATA_PATH)

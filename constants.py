@@ -24,6 +24,8 @@ HOP_LENGHT = 512
 # FOR VARIOUS COMPUTATION
 MIN_MAX = "min_max"
 VARIANCE_RATIO = 0.80
+MIN_NUM_CLUSTERS = 2
+MAX_NUM_CLUSTERS = 19
 
 # FOR PLOT AND SIMILAR
 PLOT_FOLDER = "plot"
@@ -51,6 +53,7 @@ OPT_N_COMP_TAG = "pca_opt_num_of_components_plot"
 PCA_TAG = "pca_scatter_plot"
 K_MEAN_PCA_CC_TAG = "pca_k-means_cluster_centroids_plot"
 K_MEAN_CONF_MATR_TAG = "k-means_confusion_matrix_plot"
+SILHOUETTE_TAG = "silhouette_analysis_plot"
 CONF_MATR_TAG = "_confusion_matrix_plot"
 ROC_CURVE_TAG = "_roc_curve_plot"
 PREDICT_BY_GENRES_TAG = "_compare_predictions_by_genres_plot"
