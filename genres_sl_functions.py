@@ -100,7 +100,7 @@ def compute_evaluation_metrics(model, model_name, X_test, y_test):
 
 
 # Compute a simplify version of classifier metrics report
-def compute_review_metrics(model, X_test, y_test, execution_time):
+def compute_simple_clf_metrics(model, X_test, y_test, execution_time):
     # Predict the target vector
     y_predict = model.predict(X_test)
     # my dictionary
@@ -173,7 +173,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                 X_test=X_test,
                                                 y_test=y_test,
                                                 show_on_screen=True,
-                                                store_in_folder=False)
+                                                store_in_folder=True)
 
         if model_name == "SVM":
             y_score = model_type.fit(X_train, y_train).decision_function(X_test)
@@ -189,7 +189,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                    genres_list=const.GENRES_LIST,
                                    type_of_learning="SL",
                                    show_on_screen=True,
-                                   store_in_folder=False)
+                                   store_in_folder=True)
 
         if show_compare_prediction_by_genre:
             # Predict the target vector
@@ -200,7 +200,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                                   genres_list=const.GENRES_LIST,
                                                                   model_name=model_name,
                                                                   show_on_screen=True,
-                                                                  store_in_folder=False)
+                                                                  store_in_folder=True)
         if show_simple_compare:
             input_data = prediction_comparison(model=model_type, X_test=X_test, y_test=y_test)
             # evaluation actual/prediction
@@ -208,7 +208,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                       model_name=model_name,
                                                       genres_list=const.GENRES_LIST,
                                                       show_on_screen=True,
-                                                      store_in_folder=False)
+                                                      store_in_folder=True)
 
         # evaluation metrics computation
         clf_report = compute_evaluation_metrics(model=model_type, model_name=model_name, X_test=X_test, y_test=y_test)
@@ -220,8 +220,8 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
         # Compute execution time of each classifier
         execution_time = time.time() - start_execution_time
         # single summary of metrics per classifier
-        single_clf_metrics = compute_review_metrics(model=model_type, X_test=X_test, y_test=y_test,
-                                                    execution_time=execution_time)
+        single_clf_metrics = compute_simple_clf_metrics(model=model_type, X_test=X_test, y_test=y_test,
+                                                        execution_time=execution_time)
         # merge results together and add columns with classifier name
         merge_clf_summary_results[model_name] = single_clf_metrics
     # resulted dataframe with summary metrics per classifier
@@ -263,10 +263,10 @@ def classification_and_evaluation(data_path):
                      y_train=y_train,
                      X_test=X_test,
                      y_test=y_test,
-                     show_confusion_matrix=False,
-                     show_roc_curve=False,
-                     show_compare_prediction_by_genre=False,
-                     show_simple_compare=False)
+                     show_confusion_matrix=True,
+                     show_roc_curve=True,
+                     show_compare_prediction_by_genre=True,
+                     show_simple_compare=True)
 
 
 # used for testing
