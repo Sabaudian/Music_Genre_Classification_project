@@ -81,7 +81,7 @@ def get_classification_model():
     return models
 
 
-def compute_evaluation_metrics(model, model_name, X_test, y_test):
+def compute_detailed_evaluation_metrics(model, model_name, X_test, y_test):
     # Predict the target vector
     y_predict = model.predict(X_test)
 
@@ -211,7 +211,8 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                       store_in_folder=True)
 
         # evaluation metrics computation
-        clf_report = compute_evaluation_metrics(model=model_type, model_name=model_name, X_test=X_test, y_test=y_test)
+        clf_report = compute_detailed_evaluation_metrics(model=model_type, model_name=model_name, X_test=X_test,
+                                                         y_test=y_test)
         # plot classification report
         plot_function.plot_classification_report(clf_report=clf_report,
                                                  model_name=model_name,
