@@ -48,7 +48,6 @@ def plot_correlation_matrix(input_data, show_on_screen=True, store_in_folder=Tru
 
 
 def plot_pca_opt_num_of_components(input_data, cumulative_evr, show_on_screen=True, store_in_folder=True):
-
     if show_on_screen:
 
         plt.figure(figsize=(16, 8))
@@ -73,15 +72,15 @@ def plot_clusters(input_pca_data, centroids, labels, colors_list, genres_list, s
                   store_in_folder=True):
     pca_1, pca_2, genre = input_pca_data["PC1"], input_pca_data["PC2"], input_pca_data["genre"]
 
-    colors = {v: k for v, k in enumerate(colors_list)}
-    genres = {v: k for v, k in enumerate(genres_list)}
+    colors = {value: key for value, key in enumerate(colors_list)}
+    genres = {value: key for value, key in enumerate(genres_list)}
 
     df = pd.DataFrame({"pca_1": pca_1, "pca_2": pca_2, "label": labels, "genre": genre})
     groups = df.groupby("label")
 
     if show_on_screen:
 
-        plt.style.use("ggplot")  # style
+        plt.style.use("ggplot")  # plot style
         fig, ax = plt.subplots(figsize=(16, 8))
 
         for genre, group in groups:
@@ -90,7 +89,9 @@ def plot_clusters(input_pca_data, centroids, labels, colors_list, genres_list, s
             ax.tick_params(axis="x", which="both", bottom="off", top="off", labelbottom="off")
             ax.tick_params(axis="y", which="both", left="off", top="off", labelleft="off")
 
-        plt.plot(centroids[:, 0], centroids[:, 1], "*", label="Centroids", c="white", markersize=15, markeredgewidth=1,
+        plt.plot(centroids[:, 0], centroids[:, 1], "*", label="Centroids", markerfacecolor="white",
+                 markersize=15,
+                 markeredgewidth=1,
                  markeredgecolor="black")
 
         ax.legend(title="Genres:", fontsize=10)
@@ -110,6 +111,7 @@ def plot_kmeans_confusion_matrix(data, labels, genre_list, show_on_screen=True, 
     conf_matrix_data = metrics.confusion_matrix(data["genre"], data["predicted_label"])
     conf_matrix = pd.DataFrame(conf_matrix_data, columns=np.unique(genre_list), index=np.unique(genre_list))
 
+    # show plot if requested
     if show_on_screen:
         plt.figure(figsize=(16, 8))
         ax = sns.heatmap(conf_matrix,
@@ -140,6 +142,7 @@ def plot_confusion_matrix(model, model_name, X_train, y_train, X_test, y_test,
     # Predict the target vector
     predicts = model.predict(X_test)
 
+    # show plot if requested
     if show_on_screen:
         # Plot confusion matrix
         conf_matrix = confusion_matrix(y_test, predicts)
@@ -157,7 +160,7 @@ def plot_confusion_matrix(model, model_name, X_train, y_train, X_test, y_test,
         plt.ylabel("True Labels", fontsize=16)
         plt.title("Confusion Matrix - {}".format(model_name), fontsize=22)
 
-        # save plot into folder
+        # Save plot into folder
         if store_in_folder:
             makedir(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER)
             plt.savefig(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER + "/" + model_name +
@@ -189,6 +192,7 @@ def plot_roc(y_test, y_score, operation_name, genres_list, type_of_learning="SL"
         auc_score[i] = metrics.auc(false_positive_rate[i], true_positive_rate[i])
     colors = cycle(const.COLORS_LIST)
 
+    # show plot if requested
     if show_on_screen:
         plt.figure(figsize=(16, 8))
         for i, color in zip(range(n_classes), colors):
@@ -205,7 +209,6 @@ def plot_roc(y_test, y_score, operation_name, genres_list, type_of_learning="SL"
         plt.legend(loc="lower right", prop={"size": 12})
 
         if store_in_folder:
-
             # plot roc curve for classification methods
             if type_of_learning == "SL":
                 makedir(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER)
@@ -221,6 +224,7 @@ def plot_roc(y_test, y_score, operation_name, genres_list, type_of_learning="SL"
 
 def plot_comparison_of_predictions_by_genre(y_test, y_pred, genres_list, model_name, show_on_screen=True,
                                             store_in_folder=True):
+    # show plot if requested
     if show_on_screen:
         compute_confusion_matrix = metrics.confusion_matrix(y_test, y_pred)
         bar = pd.DataFrame(compute_confusion_matrix, columns=genres_list, index=genres_list)
@@ -245,19 +249,23 @@ def plot_comparison_of_predictions_by_genre(y_test, y_pred, genres_list, model_n
 
 
 def plot_predictions_evaluation(input_data, model_name, genres_list, show_on_screen=True, store_in_folder=True):
+    # show plot if requested
     if show_on_screen:
 
         ax = input_data.plot(kind="bar", figsize=(16, 8), fontsize=14,
                              width=0.6, color=const.PRED_EVA_LIST, edgecolor="black")
+
         ax.set_xticklabels(genres_list, rotation=0)
         ax.legend(["Real Value", "Predict Value"], fontsize=9, loc="upper right")
         plt.title("Predictions Evaluation - " + model_name.upper(), fontsize=22)
         plt.xlabel("Genres", fontsize=18)
         plt.ylabel("Occurrences", fontsize=18)
+
         for p in ax.patches:
             ax.annotate(format(p.get_height()),
                         (p.get_x() + (p.get_width() / 2), p.get_height()), ha="center", va="center",
                         xytext=(0, 5), textcoords="offset points", fontsize=10, rotation=0)
+
         if store_in_folder:
             makedir(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER)
             plt.savefig(const.PLOT_FOLDER + "/" + const.CLASSIFICATION_PLOT_FOLDER + "/" + model_name +
@@ -280,9 +288,11 @@ def plot_classification_report(clf_report, model_name, show_on_screen=True, stor
                          linecolor="black",
                          cbar=True,
                          clip_on=False)
-        ax.tick_params(labelsize=15)
+        # ax.tick_params(labelsize=15)
         ax.xaxis.set_ticks_position("top")
         plt.title("{} Classification report".format(model_name), fontsize=22)
+        plt.yticks(fontsize=15)
+        plt.xticks(fontsize=15)
         plt.xlabel("Metrics", fontsize=18)
         plt.ylabel("Genres", fontsize=18)
 

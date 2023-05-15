@@ -55,4 +55,4 @@ CONF_MATR_TAG = "_confusion_matrix_plot"
 ROC_CURVE_TAG = "_roc_curve_plot"
 PREDICT_BY_GENRES_TAG = "_compare_predictions_by_genres_plot"
 PREDICT_EV_TAG = "_predictions_evaluation_plot"
-
+CLF_REPORT_TAG = "_clf_report"
