@@ -193,7 +193,7 @@ def clustering_and_evaluation(data_path):
                        show_silhouette=True)
 
 
-# used for testing
-if __name__ == '__main__':
-    # clustering
-    clustering_and_evaluation(data_path=const.DATA_PATH)
+# # used for testing
+# if __name__ == '__main__':
+#     # clustering
+#     clustering_and_evaluation(data_path=const.DATA_PATH)

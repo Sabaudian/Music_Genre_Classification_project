@@ -270,6 +270,6 @@ def classification_and_evaluation(data_path):
                      show_simple_compare=True)
 
 
-# used for testing
-if __name__ == '__main__':
-    classification_and_evaluation(data_path=const.DATA_PATH)
+# # used for testing
+# if __name__ == '__main__':
+#     classification_and_evaluation(data_path=const.DATA_PATH)
