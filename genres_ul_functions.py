@@ -4,13 +4,11 @@ import pandas as pd
 from sklearn import preprocessing
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
+from sklearn.metrics import silhouette_score
 
 # my import functions
 import constants as const
 import plot_function
-
-# FOR SILHOUETTE ANALYSIS
-from sklearn.metrics import silhouette_score
 
 
 def load_data(data_path):
@@ -191,7 +189,6 @@ def clustering_and_evaluation(data_path):
                        show_confusion_matrix=False,
                        show_roc_curve=False,
                        show_silhouette=True)
-
 
 # # used for testing
 # if __name__ == '__main__':
