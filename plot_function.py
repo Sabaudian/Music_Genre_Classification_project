@@ -288,7 +288,7 @@ def plot_classification_report(clf_report, model_name, show_on_screen=True, stor
                          linecolor="black",
                          cbar=True,
                          clip_on=False)
-        # ax.tick_params(labelsize=15)
+
         ax.xaxis.set_ticks_position("top")
         plt.title("{} Classification report".format(model_name), fontsize=22)
         plt.yticks(fontsize=15)
@@ -324,19 +324,22 @@ def plot_silhouette(silhouette_score_values, number_of_clusters, min_num_k, max_
         optimal_number_of_components = number_of_clusters[silhouette_score_values.index(max(silhouette_score_values))]
         worst_number_of_components = number_of_clusters[silhouette_score_values.index(min(silhouette_score_values))]
 
-        # Plot sco
+        # Plot values annotation
         for y_value in silhouette_score_values:
             x_value = silhouette_score_values.index(y_value)
             x_offset = 1.85
             y_offset = 0.005
             if max(silhouette_score_values) == y_value:
-                ax1.annotate(str(round(y_value, 3)), xy=(x_value + x_offset, y_value + y_offset),
+                ax1.annotate(str(round(y_value, 3)),
+                             xy=(x_value + x_offset, y_value + y_offset),
                              color="green", weight="bold")
             elif min(silhouette_score_values) == y_value:
-                ax1.annotate(str(round(y_value, 3)), xy=(x_value + x_offset, y_value + y_offset),
+                ax1.annotate(str(round(y_value, 3)),
+                             xy=(x_value + x_offset, y_value + y_offset),
                              color="red", weight="bold")
             else:
-                ax1.annotate(str(round(y_value, 3)), xy=(x_value + x_offset, y_value + y_offset),
+                ax1.annotate(str(round(y_value, 3)),
+                             xy=(x_value + x_offset, y_value + y_offset),
                              color="black", weight="normal")
 
         # add lines to indicates best and worst scenario
