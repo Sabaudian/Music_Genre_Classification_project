@@ -35,7 +35,7 @@ Then we have the core classes of the project:
 - **_costants:_** class that contain all the constants used in the project.
 
 ## Documentation
-- **Project_Review.pdf:** here you can find a description of the work done to carry out the project (_It was done in Latex on Overleaf:https://www.overleaf.com_).
+- **apr_project_report.pdf:** here you can find a description of the work done to carry out the project (_It was done in Latex on Overleaf:https://www.overleaf.com_).
 
 
 
