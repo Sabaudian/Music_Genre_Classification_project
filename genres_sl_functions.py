@@ -216,8 +216,8 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
         # plot classification report
         plot_function.plot_classification_report(clf_report=clf_report,
                                                  model_name=model_name,
-                                                 show_on_screen=False,
-                                                 store_in_folder=False)
+                                                 show_on_screen=True,
+                                                 store_in_folder=True)
         # Compute execution time of each classifier
         execution_time = time.time() - start_execution_time
         # single summary of metrics per classifier
@@ -242,8 +242,8 @@ def classification_and_evaluation(data_path):
 
     # Plot correlation matrix
     plot_function.plot_correlation_matrix(input_data=X,
-                                          show_on_screen=False,
-                                          store_in_folder=False)
+                                          show_on_screen=True,
+                                          store_in_folder=True)
 
     # create train/test split
     X_train, X_test, y_train, y_test = prepare_datasets(X=X, y=y, test_size=0.30)

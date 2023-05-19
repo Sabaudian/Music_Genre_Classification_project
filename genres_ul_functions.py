@@ -107,7 +107,8 @@ def silhouette_analysis_for_kmeans_clustering(input_data, min_num_k, max_num_k):
         clusters.fit(input_data)
         cluster_labels = clusters.predict(input_data)
         # append score values in the list
-        silhouette_score_values.append(silhouette_score(input_data, cluster_labels, metric="euclidean",
+        silhouette_score_values.append(silhouette_score(input_data, cluster_labels,
+                                                        metric="euclidean",
                                                         sample_size=None,
                                                         random_state=None))
     # plot function
@@ -116,7 +117,7 @@ def silhouette_analysis_for_kmeans_clustering(input_data, min_num_k, max_num_k):
                                   min_num_k=const.MIN_NUM_CLUSTERS,
                                   max_num_k=const.MAX_NUM_CLUSTERS,
                                   show_on_screen=True,
-                                  store_in_folder=False)
+                                  store_in_folder=True)
 
 
 def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_confusion_matrix, show_roc_curve,
@@ -124,8 +125,8 @@ def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_
     # Number of components
     num_components = number_of_components(input_data=input_data,
                                           variance_ratio=const.VARIANCE_RATIO,
-                                          show_on_screen=False,
-                                          store_in_folder=False)
+                                          show_on_screen=True,
+                                          store_in_folder=True)
 
     # My K-Means model getting labels and centers
     kmeans_model, labels, centers = get_kmeans_model(input_data)
@@ -144,7 +145,7 @@ def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_
                                     colors_list=const.COLORS_LIST,
                                     genres_list=const.GENRES_LIST,
                                     show_on_screen=True,
-                                    store_in_folder=False)
+                                    store_in_folder=True)
 
     if show_confusion_matrix:
         # plot confusion matrix
@@ -152,7 +153,7 @@ def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_
                                                    labels=labels,
                                                    genre_list=const.GENRES_LIST,
                                                    show_on_screen=True,
-                                                   store_in_folder=False)
+                                                   store_in_folder=True)
     if show_roc_curve:
         # plot roc curve
         plot_function.plot_roc(y_test=input_columns.values,
@@ -161,7 +162,7 @@ def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_
                                genres_list=const.GENRES_LIST,
                                type_of_learning="UL",
                                show_on_screen=True,
-                               store_in_folder=False)
+                               store_in_folder=True)
 
     if show_silhouette:
         # Compute and plot silhouette analys on K-Means clustering
@@ -179,7 +180,7 @@ def clustering_and_evaluation(data_path):
 
     # Plot correlation matrix
     plot_function.plot_correlation_matrix(input_data=X,
-                                          show_on_screen=False,
+                                          show_on_screen=True,
                                           store_in_folder=False)
     # k-means model and evaluation
     k_means_clustering(input_data=X,
@@ -187,7 +188,7 @@ def clustering_and_evaluation(data_path):
                        dataframe=df,
                        show_cluster=True,
                        show_confusion_matrix=False,
-                       show_roc_curve=False,
+                       show_roc_curve=True,
                        show_silhouette=True)
 
 # # used for testing
