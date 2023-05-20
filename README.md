@@ -34,9 +34,6 @@ Then we have the core classes of the project:
 - **_plot_functions:_** class used for defining all the plot functions.
 - **_costants:_** class that contain all the constants used in the project.
 
-## Documentation
-- **_WORK IN PROGRESS_...**
-
 
 
 
