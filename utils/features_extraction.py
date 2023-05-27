@@ -90,6 +90,6 @@ def features_extraction_to_csv(dataset_path, data_folder, data_path):
                 data_file = open(data_path, "a", newline="")
 
                 # write data to file
-                with data_file:  # write data to file
+                with data_file:
                     writer = csv.writer(data_file)
                     writer.writerow(to_append.split())
