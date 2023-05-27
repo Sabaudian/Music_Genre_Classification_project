@@ -173,7 +173,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                 X_test=X_test,
                                                 y_test=y_test,
                                                 show_on_screen=True,
-                                                store_in_folder=True)
+                                                store_in_folder=False)
 
         if model_name == "SVM":
             y_score = model_type.fit(X_train, y_train).decision_function(X_test)
@@ -189,7 +189,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                    genres_list=const.GENRES_LIST,
                                    type_of_learning="SL",
                                    show_on_screen=True,
-                                   store_in_folder=True)
+                                   store_in_folder=False)
 
         if show_compare_prediction_by_genre:
             # Predict the target vector
@@ -200,7 +200,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                                   genres_list=const.GENRES_LIST,
                                                                   model_name=model_name,
                                                                   show_on_screen=True,
-                                                                  store_in_folder=True)
+                                                                  store_in_folder=False)
         if show_simple_compare:
             input_data = prediction_comparison(model=model_type, X_test=X_test, y_test=y_test)
             # evaluation actual/prediction
@@ -208,7 +208,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
                                                       model_name=model_name,
                                                       genres_list=const.GENRES_LIST,
                                                       show_on_screen=True,
-                                                      store_in_folder=True)
+                                                      store_in_folder=False)
 
         # evaluation metrics computation
         clf_report = compute_detailed_evaluation_metrics(model=model_type, model_name=model_name, X_test=X_test,
@@ -217,7 +217,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
         plot_function.plot_classification_report(clf_report=clf_report,
                                                  model_name=model_name,
                                                  show_on_screen=True,
-                                                 store_in_folder=True)
+                                                 store_in_folder=False)
         # Compute execution time of each classifier
         execution_time = time.time() - start_execution_time
         # single summary of metrics per classifier
@@ -243,7 +243,7 @@ def classification_and_evaluation(data_path):
     # Plot correlation matrix
     plot_function.plot_correlation_matrix(input_data=X,
                                           show_on_screen=True,
-                                          store_in_folder=True)
+                                          store_in_folder=False)
 
     # create train/test split
     X_train, X_test, y_train, y_test = prepare_datasets(X=X, y=y, test_size=0.30)

@@ -187,7 +187,7 @@ def clustering_and_evaluation(data_path):
                        input_columns=y,
                        dataframe=df,
                        show_cluster=True,
-                       show_confusion_matrix=False,
+                       show_confusion_matrix=True,
                        show_roc_curve=True,
                        show_silhouette=True)
 
