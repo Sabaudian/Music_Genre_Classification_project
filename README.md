@@ -21,7 +21,7 @@ the dataset used for built this project is the notorious GTZAN dataset, recovere
 
 In the **utils** directory there are all that classes used for preprocessing the dataset and performing data augmentation (I did not use the csv file available at the previous link, I built my own).
 
-- **_features_computation.py:_** computation of the various features to extract from audio files.
+- **_features_computation:_** computation of the various features to extract from audio files.
 - _**features_extractions:**_ extraction of the computed features to a csv file in a proper directory.
 - _**features_visualizations:**_ visualization of the single audio signals and the visualization of the various extracted features with a confrontation of the different genres.
 - _**prepare_dataset:**_ check the duration of audio files and performe data augmentation (30s long file -> ten 3s long chunck).
@@ -33,9 +33,6 @@ Then we have the core classes of the project:
 - **_genres_sl_functions:_** class that performs various classification algorithms (Neural Network, Random Forest, K-Nearest Neighbors, Support Vector Machine) and evaluate their performances with confusion matrix, roc curve and metrics (accuracy, F1-score,...).
 - **_plot_functions:_** class used for defining all the plot functions.
 - **_costants:_** class that contain all the constants used in the project.
-
-## Documentation
-...*work in progress*...
 
 
 
