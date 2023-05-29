@@ -34,6 +34,16 @@ Then we have the core classes of the project:
 - **_plot_functions:_** class used for defining all the plot functions.
 - **_costants:_** class that contain all the constants used in the project.
 
+## Performace Summary:
+
+|   | MULTILAYER PERCEPTRON | RANDOM FOREST | K-NEAREST NEIGHBORS | SUPPORT VECTOR MACHINE |
+| - | --------------------- | ------------- | ------------------- | ---------------------- |
+| ACCURACY  | 84.80 | 79.33 | 89.80 | 89.40 |
+| F1-SCORE  | 0.85 | 0.79 | 0.90 | 0.89 |
+| EXECUTION TIME | 63.72 | 52.76 | 7.73 | 21.40 |
+
+
+
 
 
 
