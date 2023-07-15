@@ -19,12 +19,14 @@ This repository is based on the recognition of musical genres through supervised
 ## Information:
 the dataset used for built this project is the notorious GTZAN dataset, recovered from kaggle (_**link to database:** https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification_). 
 
-In the **utils** directory there are all that classes used for preprocessing the dataset and performing data augmentation (I did not use the csv file available at the previous link, I built my own).
+In the **utils** directory,
+there are all that classes used for preprocessing the dataset and performing data augmentation
+(I did not use the csv file available at the previous link, I built my own).
 
 - **_features_computation:_** computation of the various features to extract from audio files.
 - _**features_extractions:**_ extraction of the computed features to a csv file in a proper directory.
 - _**features_visualizations:**_ visualization of the single audio signals and the visualization of the various extracted features with a confrontation of the different genres.
-- _**prepare_dataset:**_ check the duration of audio files and performe data augmentation (30s long file -> ten 3s long chunck).
+- _**prepare_dataset:**_ check the duration of audio files and perform data augmentation (30s long file -> ten 3s long chunk).
 
 Then we have the core classes of the project:
 
@@ -32,7 +34,7 @@ Then we have the core classes of the project:
 - _**genres_ul_functions:**_ class that performs k-means clustering and then performs its evaluation. 
 - **_genres_sl_functions:_** class that performs various classification algorithms (Neural Network, Random Forest, K-Nearest Neighbors, Support Vector Machine) and evaluate their performances with confusion matrix, roc curve and metrics (accuracy, F1-score,...).
 - **_plot_functions:_** class used for defining all the plot functions.
-- **_costants:_** class that contain all the constants used in the project.
+- **_constants:_** class that contains all the constants used in the project.
 
 
 

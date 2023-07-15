@@ -165,7 +165,7 @@ def k_means_clustering(input_data, input_columns, dataframe, show_cluster, show_
                                store_in_folder=True)
 
     if show_silhouette:
-        # Compute and plot silhouette analys on K-Means clustering
+        # Compute and plot silhouette analysis on K-Means clustering
         silhouette_analysis_for_kmeans_clustering(input_data=input_data,
                                                   min_num_k=const.MIN_NUM_CLUSTERS,
                                                   max_num_k=const.MAX_NUM_CLUSTERS)

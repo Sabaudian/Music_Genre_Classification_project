@@ -14,19 +14,19 @@ if __name__ == '__main__':
     check_preprocessing_data = input("> START PRE-PROCESSING DATA? [Y/N]: ")
     if check_preprocessing_data.upper() == "Y":
 
-        # check file extension
+        # check the file extension
         check_if_extension_is_wav = input("\n>>> CHECK FILE EXTENSION? [Y/N]: ")
         if check_if_extension_is_wav.upper() == "Y":
             prepare.check_file_extension(dataset_path=const.DATASET_PATH,
                                          file_extension=const.WAV)
 
-        # check duration of sound file
+        # check the duration of sound file
         check_if_sound_duration = input("\n>>> CHECK SOUND DURATION? [Y/N]: ")
         if check_if_sound_duration.upper() == "Y":
             prepare.check_sound_duration(dataset_path=const.DATASET_PATH,
                                          milliseconds_duration=const.DURATION_MS)
 
-        # make chunk from og. sound file
+        # make chunks from og. sound file
         check_if_chunks_exist = input("\n>>> PERMORFORMING DATA AUGMENTATION? [Y/N]: ")
         if check_if_chunks_exist.upper() == "Y":
             prepare.make_chunks_from_data(dataset_path=const.DATASET_PATH,

@@ -15,8 +15,8 @@ def makedir(dir_path):
 def check_file_extension(dataset_path, file_extension):
     print("\n Checking audio file extension...")
 
-    # loop through all genre sub-folder
-    for i, (dirpath, dirname, filenames) in enumerate(os.walk(dataset_path)):
+    # loop through all genre sub-folders
+    for i, (dirpath, dirnames, filenames) in enumerate(os.walk(dataset_path)):
 
         # loop through audio file
         for f in sorted(filenames):
@@ -24,7 +24,7 @@ def check_file_extension(dataset_path, file_extension):
             # to ignore a hidden file in my folder
             if not f.startswith("."):
 
-                # pick file extension
+                # pick the file extension
                 current_extension = f.split(".")[-1]  # -> wav
                 # file path
                 file_path = os.path.join(dirpath, f)
@@ -41,8 +41,8 @@ def check_file_extension(dataset_path, file_extension):
 def check_sound_duration(dataset_path, milliseconds_duration):
     print("\n Checking audio file duration...")
 
-    # loop through all genre sub-folder
-    for i, (dirpath, dirname, filenames) in enumerate(os.walk(dataset_path)):
+    # loop through all genre sub-folders
+    for i, (dirpath, dirnames, filenames) in enumerate(os.walk(dataset_path)):
 
         # ensure we're processing a genre sub-folder level
         if dirpath is not dataset_path:
@@ -50,7 +50,7 @@ def check_sound_duration(dataset_path, milliseconds_duration):
             # loop through audio file
             for f in sorted(filenames):
 
-                # pick file extension
+                # pick the file extension
                 extension = f.split(".")[-1]
 
                 # control the duration -> at least milliseconds_duration (30000 ms)
@@ -58,7 +58,7 @@ def check_sound_duration(dataset_path, milliseconds_duration):
                 sound = AudioSegment.from_file(file_path, format=extension)
                 duration_in_milliseconds = len(sound)
 
-                # if it is less than my threshold add silence
+                # if it is less than my threshold, add silence
                 if duration_in_milliseconds < milliseconds_duration:
                     # pick file with duration less milliseconds_duration
                     print(
@@ -82,8 +82,8 @@ def make_chunks_from_data(dataset_path, chunk_length, new_dir_path):
 
         print("\nData Augmentation in progress...\n")
 
-        # loop through all genre sub-folder
-        for i, (dirpath, dirname, filenames) in enumerate(os.walk(dataset_path)):
+        # loop through all genre sub-folders
+        for i, (dirpath, dirnames, filenames) in enumerate(os.walk(dataset_path)):
 
             # ensure we're processing a genre sub-folder level
             if dirpath is not dataset_path:
@@ -100,16 +100,16 @@ def make_chunks_from_data(dataset_path, chunk_length, new_dir_path):
                 # process all audio files in genre sub-folder
                 for f in sorted(filenames):
 
-                    # pick full file format
+                    # pick the full file format
                     print("\n- File: \033[92m{}\033[0m".format(f))
 
-                    # pick file extension
+                    # pick the file extension
                     file_extension = f.split(".")[-1]  # -> wav
                     file_id = f.split(".")[-2]  # -> 0000
                     file_genre = f.split(".")[-3]  # -> blues
                     genre_plus_id = file_genre + "." + file_id  # -> blues.0000
 
-                    # pick current file path
+                    # pick the current file path
                     current_file_path = os.path.join(dirpath, f)
                     print("- Location: \033[92m{}\033[0m".format(current_file_path))
 
@@ -137,5 +137,3 @@ def make_chunks_from_data(dataset_path, chunk_length, new_dir_path):
         print("\n...all data has been processed!\n")
     else:
         print("\n The data has already been processed! Proceed with the features extraction")
-
-

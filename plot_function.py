@@ -307,7 +307,7 @@ def plot_classification_report(clf_report, model_name, show_on_screen=True, stor
 def plot_silhouette(silhouette_score_values, number_of_clusters, min_num_k, max_num_k,
                     show_on_screen=True, store_in_folder=True):
     if show_on_screen:
-        # Set figure and  label
+        # Set figure and label
         fig, ax1 = plt.subplots(figsize=(16, 8))
         y_ax_ticks = np.arange(0, max(silhouette_score_values) + 1, 0.1)
         x_ax_ticks = np.arange(min_num_k, max_num_k + 1, 1)
@@ -320,7 +320,7 @@ def plot_silhouette(silhouette_score_values, number_of_clusters, min_num_k, max_
         ax1.set_xticks(x_ax_ticks, fontsize=15)
         ax1.set_xlabel("Number Of Clusters", fontsize=18)
 
-        # compute the silhouette optimal and worst result
+        # compute the silhouette: optimal and worst result
         optimal_number_of_components = number_of_clusters[silhouette_score_values.index(max(silhouette_score_values))]
         worst_number_of_components = number_of_clusters[silhouette_score_values.index(min(silhouette_score_values))]
 
@@ -342,7 +342,7 @@ def plot_silhouette(silhouette_score_values, number_of_clusters, min_num_k, max_
                              xy=(x_value + x_offset, y_value + y_offset),
                              color="black", weight="normal")
 
-        # add lines to indicates best and worst scenario
+        # add lines to indicate the best and worst scenario
         ax1.vlines(x=optimal_number_of_components, ymin=0, ymax=max(silhouette_score_values), linewidth=2,
                    color="green",
                    label="Max Value", linestyle="dashed")

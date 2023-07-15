@@ -92,14 +92,14 @@ def compute_detailed_evaluation_metrics(model, model_name, X_test, y_test):
                                     "support": clf_report.get("macro avg")["support"]}})
     df = pd.DataFrame(clf_report).transpose()
 
-    # save report into file
+    # save the report into file
     makedir(const.DATA_FOLDER + "/" + const.CLF_REPORT_PATH)
     df.to_csv(const.DATA_FOLDER + "/" + const.CLF_REPORT_PATH + "/" + model_name + "_classification_report.csv",
               index=True, float_format="%.5f")
     return df
 
 
-# Compute a simplify version of classifier metrics report
+# Compute a simplify version of the classifier metrics report
 def compute_simple_clf_metrics(model, X_test, y_test, execution_time):
     # Predict the target vector
     y_predict = model.predict(X_test)
@@ -161,7 +161,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
         # computed model
         model_type = value
 
-        # For computation of execution time of classifiers
+        # For computation of execution time
         start_execution_time = time.time()
 
         if show_confusion_matrix:
@@ -182,7 +182,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
             y_score = model_type.predict_proba(X_test)
 
         if show_roc_curve:
-            # Plotting roc curve
+            # Plotting the roc curve
             plot_function.plot_roc(y_test=y_test,
                                    y_score=y_score,
                                    operation_name=model_name,
@@ -227,7 +227,7 @@ def model_evaluation(models, X_train, y_train, X_test, y_test,
         merge_clf_summary_results[model_name] = single_clf_metrics
     # resulted dataframe with summary metrics per classifier
     clf_summary_report = pd.DataFrame(merge_clf_summary_results)
-    # save report into file
+    # save the report into file
     makedir(const.DATA_FOLDER + "/" + const.CLF_REPORT_PATH)
     clf_summary_report.to_csv(const.DATA_FOLDER + "/" + const.CLF_REPORT_PATH + "/CLFs_summary_report.csv",
                               index=True, float_format="%.2f")
