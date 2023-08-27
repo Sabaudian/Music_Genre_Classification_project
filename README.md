@@ -31,10 +31,10 @@ there are all that classes used for preprocessing the dataset and performing dat
 Then we have the core classes of the project:
 
 - _**main:**_ main class of the project that calls all the other. 
-- _**genres_ul_functions:**_ class that performs k-means clustering and then performs its evaluation. 
-- **_genres_sl_functions:_** class that performs various classification algorithms (Neural Network, Random Forest, K-Nearest Neighbors, Support Vector Machine) and evaluate their performances with confusion matrix, roc curve and metrics (accuracy, F1-score,...).
-- **_plot_functions:_** class used for defining all the plot functions.
-- **_constants:_** class that contains all the constants used in the project.
+- _**genres_ul_functions:**_ performs k-means clustering and then performs its evaluation. 
+- **_genres_sl_functions:_** performs various classification algorithms (Neural Network, Random Forest, K-Nearest Neighbors, Support Vector Machine) and evaluate their performances with confusion matrix, roc curve and metrics (accuracy, F1-score,...).
+- **_plot_functions:_** used for defining all the plot functions.
+- **_constants:_** contains all the constants used in the project.
 
 ## Performace Summary:
 
