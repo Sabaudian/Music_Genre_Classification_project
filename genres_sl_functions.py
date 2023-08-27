@@ -99,7 +99,7 @@ def compute_detailed_evaluation_metrics(model, model_name, X_test, y_test):
     return df
 
 
-# Compute a simplify version of the classifier metrics report
+# Compute a simplified version of the classifier metrics report
 def compute_simple_clf_metrics(model, X_test, y_test, execution_time):
     # Predict the target vector
     y_predict = model.predict(X_test)
