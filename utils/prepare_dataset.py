@@ -15,7 +15,7 @@ def makedir(dir_path):
 def check_file_extension(dataset_path, file_extension):
     print("\n Checking audio file extension...")
 
-    # loop through all genre sub-folders
+    # loop through all genre subfolders
     for i, (dirpath, dirnames, filenames) in enumerate(os.walk(dataset_path)):
 
         # loop through audio file
@@ -41,7 +41,7 @@ def check_file_extension(dataset_path, file_extension):
 def check_sound_duration(dataset_path, milliseconds_duration):
     print("\n Checking audio file duration...")
 
-    # loop through all genre sub-folders
+    # loop through all genre subfolders
     for i, (dirpath, dirnames, filenames) in enumerate(os.walk(dataset_path)):
 
         # ensure we're processing a genre sub-folder level
@@ -82,7 +82,7 @@ def make_chunks_from_data(dataset_path, chunk_length, new_dir_path):
 
         print("\nData Augmentation in progress...\n")
 
-        # loop through all genre sub-folders
+        # loop through all genre subfolders
         for i, (dirpath, dirnames, filenames) in enumerate(os.walk(dataset_path)):
 
             # ensure we're processing a genre sub-folder level
