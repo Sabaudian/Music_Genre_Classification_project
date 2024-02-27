@@ -15,6 +15,9 @@ This repository is based on the recognition of musical genres through supervised
 - pydub: https://pypi.org/project/pydub/
 - pandas: https://pandas.pydata.org
 - scikit-learn: https://scikit-learn.org/stable/
+```
+$ pip install -r requirements.txt
+```
 
 ## Information:
 the dataset used for built this project is the notorious GTZAN dataset, recovered from kaggle (_**link to database:** https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification_). 
