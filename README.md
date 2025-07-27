@@ -20,7 +20,7 @@ $ pip install -r requirements.txt
 ```
 
 ## Information:
-the dataset used for built this project is the notorious GTZAN dataset, recovered from kaggle (_**link to database:** https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification_). 
+the dataset used for this project is the notorious GTZAN dataset, recovered from kaggle (_**link to database:** https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification_). 
 
 In the **utils** directory,
 there are all that classes used for preprocessing the dataset and performing data augmentation
